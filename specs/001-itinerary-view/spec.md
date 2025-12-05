@@ -6,6 +6,12 @@
 **輸入**: 使用者描述（摘要）：
 「Google Sheet 匯入與快取、RWD、Emoji/卡片式 UX、免費部署（GitHub Pages/Cloudflare/Vercel），Loading、錯誤提示、PWA(選)、SEO(選)、Deep Link、權限安全。」
 
+## Clarifications
+
+### Session 2025-12-05
+
+- Q: Google Sheet 取用策略（公開 vs API vs 代理 vs 靜態）？ → A: 使用「公開可讀」Google Sheet，前端以 CSV/JSON 直連取用（無需金鑰）。
+
 ## 使用者情境與測試（必填）
 
 <!--
@@ -89,6 +95,7 @@
 ### 功能性需求
 
 - **FR-001**：系統必須能從指定 Google Sheet 讀取行程資料並轉為前端可用結構。
+- （Clarified）資料來源採「公開可讀」Google Sheet，前端以 CSV/JSON 直連；若改用 API/代理須更新安全策略與部署設計。
 - **FR-002**：系統必須具備快取／更新機制以反映最新資料（至少提供手動重新整理）。
 - **FR-003**：使用者必須能依日期切換檢視每日行程卡片（含 Emoji 與一致排版）。
 - **FR-004**：系統必須提供關鍵字搜尋與分類過濾（景點／餐廳／交通／住宿）。
