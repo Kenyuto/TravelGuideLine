@@ -12,6 +12,9 @@
 
 - Q: Google Sheet 取用策略（公開 vs API vs 代理 vs 靜態）？ → A: 使用「公開可讀」Google Sheet，前端以 CSV/JSON 直連取用（無需金鑰）。
 - Q: 欄位異動容錯策略？ → A: 採用「欄位映射表（版本化）＋寬鬆解析」，未知欄位忽略並記錄告警。
+- Q: PWA 快取範圍？ → A: 快取 CSS/JS/字型 + 首屏必要 JSON。
+- Q: SEO 層級？ → A: 基礎 Open Graph + meta（title/description/image）。
+- Q: 深連結格式？ → A: `?date=YYYY-MM-DD&item=<slug>`（同時支援僅日期 `?date=...`）。
 
 ## 使用者情境與測試（必填）
 
@@ -105,13 +108,15 @@
 - **FR-005**：系統必須支援 RWD，於手機／平板／桌機皆能清晰顯示（含橫直向）。
 - **FR-006**：系統必須提供 Loading 狀態與取用失敗的錯誤提示。
 - **FR-007**：系統必須支援以網址參數（Deep Link）直接開啟特定日期或行程。
+  - （Clarified）深連結格式採 `?date=YYYY-MM-DD&item=<slug>`；若僅提供 `date` 則定位至該日；僅提供 `item` 則推導其所屬日期。
 - **FR-008**：系統應該可免費部署於常見平台（GitHub Pages／Cloudflare Pages／Vercel）。
 - **FR-009**：系統應該提供基本 PWA 快取（至少 CSS/JS），以改善弱網體驗。
+  - （Clarified）快取清單包含 CSS、JS、字型資源與「首屏必要 JSON」；採用版本化快取名稱與更新策略避免舊資源殘留。
 - **FR-010**：系統必須以只讀方式安全取用 Google Sheet（公開或 API Key），避免在前端暴露敏感金鑰。
 - **FR-012**：系統必須支援圖片顯示：卡片可包含圖片縮圖／連結，並具備載入中占位、失敗替代圖、Lazy Load 與基本快取策略。
 
 *不清楚但需標記：*
-- **FR-011**：SEO 深度需求（結構化資料、Open Graph 細節）為 [NEEDS CLARIFICATION: 具體 SEO 規模與範圍未指定]。
+- **FR-011**：SEO 層級採「基礎 Open Graph + meta（title/description/image）」；結構化資料、站點地圖與語系標註暫不納入（如後續需要，於計畫階段升級）。
 
 ### 關鍵實體（涉及資料時）
 
