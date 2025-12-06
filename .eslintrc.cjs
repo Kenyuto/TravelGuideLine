@@ -1,19 +1,16 @@
 /* eslint-env node */
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
-  extends: [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  plugins: ['@typescript-eslint'],
+  extends: ['plugin:vue/vue3-essential', 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
+    parser: '@typescript-eslint/parser',
     sourceType: 'module',
   },
+  plugins: ['@typescript-eslint'],
   rules: {
     'vue/multi-word-component-names': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }]
-  }
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+  },
 }

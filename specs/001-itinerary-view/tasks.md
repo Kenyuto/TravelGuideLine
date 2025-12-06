@@ -47,16 +47,16 @@
 
 **⚠️ 重要**：此階段完成前，無法開始任何使用者故事的工作
 
-- [ ] T009 在 src/types/auth.ts 中建立 TypeScript 型別（AuthConfig、AuthItem）
-- [ ] T010 [P] 在 src/types/itinerary.ts 中建立 TypeScript 型別（ItineraryDay、ItineraryItem）
-- [ ] T011 [P] 在 src/types/travelInfo.ts 中建立 TypeScript 型別（TravelInfo、InfoItem）
-- [ ] T012 [P] 在 src/types/common.ts 中建立 TypeScript 型別（4 個錯誤型別：GoogleSheetError、InvalidPasswordError、PasswordExpiredError、ParsingError）
-- [ ] T013 在 src/utils/googleSheetParser.ts 中實作 googleSheetParser 工具函數（3 個函數：parseGoogleSheetCSV、getGoogleSheetCSVUrl、fetchGoogleSheetCSV，使用 PapaParse 5.x）
-- [ ] T014 [P] 在 src/utils/dateHelper.ts 中實作 dateHelper 工具函數（4 個函數：formatDate、parseDate、daysBetween、getToday）
-- [ ] T015 [P] 在 src/utils/authHelper.ts 中實作 authHelper 工具函數（4 個函數：saveAuthState、loadAuthState、clearAuthState、isLoginValid，支援 7 天有效期）
-- [ ] T016 在 src/router/index.ts 中建立 Vue Router 4.x 配置（Hash 模式，3 個路由：/、/itinerary、/travel-info）
-- [ ] T017 建立主要 App.vue 檔案，包含 RouterView 與全域 loading/error 狀態
-- [ ] T018 建立 main.ts 進入點，包含 Pinia + Router + App 掛載
+- [X] T009 在 src/types/auth.ts 中建立 TypeScript 型別（AuthConfig、AuthItem）
+- [X] T010 [P] 在 src/types/itinerary.ts 中建立 TypeScript 型別（ItineraryDay、ItineraryItem）
+- [X] T011 [P] 在 src/types/travelInfo.ts 中建立 TypeScript 型別（TravelInfo、InfoItem）
+- [X] T012 [P] 在 src/types/common.ts 中建立 TypeScript 型別（4 個錯誤型別：GoogleSheetError、InvalidPasswordError、PasswordExpiredError、ParsingError）
+- [X] T013 在 src/utils/googleSheetParser.ts 中實作 googleSheetParser 工具函數（3 個函數：parseGoogleSheetCSV、getGoogleSheetCSVUrl、fetchGoogleSheetCSV，使用 PapaParse 5.x）
+- [X] T014 [P] 在 src/utils/dateHelper.ts 中實作 dateHelper 工具函數（4 個函數：formatDate、parseDate、daysBetween、getToday）
+- [X] T015 [P] 在 src/utils/authHelper.ts 中實作 authHelper 工具函數（4 個函數：saveAuthState、loadAuthState、clearAuthState、isLoginValid，支援 7 天有效期）
+- [X] T016 在 src/router/index.ts 中建立 Vue Router 4.x 配置（Hash 模式，3 個路由：/、/itinerary、/travel-info）
+- [X] T017 建立主要 App.vue 檔案，包含 RouterView 與全域 loading/error 狀態
+- [X] T018 建立 main.ts 進入點，包含 Pinia + Router + App 掛載
 
 **檢查點**：基礎設施就緒 - 使用者故事現在可以開始平行實作
 
