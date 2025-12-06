@@ -1,451 +1,451 @@
-# Tasks: 旅遊行程檢視網站（含登入驗證）
+# 任務清單：旅遊行程檢視網站（含登入驗證）
 
-**Feature**: 001-itinerary-view  
-**Branch**: 001-itinerary-view  
-**Input**: Design documents from `/specs/001-itinerary-view/`
+**功能**: 001-itinerary-view  
+**分支**: 001-itinerary-view  
+**輸入**: 來自 `/specs/001-itinerary-view/` 的設計文件
 
-**Prerequisites**: 
-- ✅ plan.md (implementation plan with technical stack)
-- ✅ spec.md (5 user stories: P0 Login, P1 Itinerary, P2 Search/Filter, P2 Travel Info, P3 Deep Links)
-- ✅ research.md (11 technical decisions)
-- ✅ data-model.md (6 entities: AuthConfig, AuthItem, ItineraryDay, ItineraryItem, TravelInfo, InfoItem)
-- ✅ contracts/google-sheet-csv.md (3 worksheets: 行程 GID 0, 旅遊資訊 GID 1, 登入設定 GID 2)
-- ✅ contracts/frontend-api.md (4 Pinia stores, 5 components, 5 utilities, 4 error types)
+**前置條件**: 
+- ✅ plan.md（實作計畫與技術棧）
+- ✅ spec.md（5 個使用者故事：P0 登入、P1 行程檢視、P2 搜尋/過濾、P2 旅遊資訊、P3 深連結）
+- ✅ research.md（11 項技術決策）
+- ✅ data-model.md（6 個實體：AuthConfig、AuthItem、ItineraryDay、ItineraryItem、TravelInfo、InfoItem）
+- ✅ contracts/google-sheet-csv.md（3 個工作表：行程 GID 0、旅遊資訊 GID 1、登入設定 GID 2）
+- ✅ contracts/frontend-api.md（4 個 Pinia stores、5 個元件、5 個工具函數、4 個錯誤型別）
 
-**Tests**: Tests are included per Constitution requirements (unit + integration + E2E coverage)
+**測試**: 依據 Constitution 要求包含測試（unit + integration + E2E 覆蓋）
 
-**Organization**: Tasks grouped by user story for independent implementation and testing
-
----
-
-## Format: `- [ ] [TID] [P?] [Story?] Description with file path`
-
-- **[P]**: Can run in parallel (different files, no dependencies on incomplete tasks)
-- **[Story]**: Which user story this task belongs to (US0, US1, US2, US3, US4)
-- All tasks include exact file paths
+**組織方式**: 任務依使用者故事分組，以利獨立實作與測試
 
 ---
 
-## Phase 1: Setup (Shared Infrastructure)
+## 格式：`- [ ] [TID] [P?] [Story?] 描述與檔案路徑`
 
-**Purpose**: Project initialization and basic structure
-
-- [ ] T001 Create project directory structure (src/, tests/, public/, docs/)
-- [ ] T002 Initialize Vue 3 + Vite 5.x + TypeScript 5.x project with dependencies from package.json
-- [ ] T003 [P] Configure ESLint + Prettier for Vue 3 + TypeScript strict mode
-- [ ] T004 [P] Configure Vitest 1.x for unit/integration tests in vitest.config.ts
-- [ ] T005 [P] Configure Playwright 1.40+ for E2E tests in playwright.config.ts
-- [ ] T006 [P] Setup Tailwind CSS 3.x with mobile-first configuration in tailwind.config.js
-- [ ] T007 [P] Create .env.example with VITE_GOOGLE_SHEET_ID placeholder
-- [ ] T008 [P] Setup Git pre-commit hooks (lint-staged + Husky) for code quality
+- **[P]**：可平行執行（不同檔案，無未完成任務的相依性）
+- **[Story]**：此任務屬於哪個使用者故事（US0、US1、US2、US3、US4）
+- 所有任務皆包含明確的檔案路徑
 
 ---
 
-## Phase 2: Foundational (Blocking Prerequisites)
+## Phase 1: 專案設置（共用基礎設施）
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story implementation
+**目的**：專案初始化與基本結構
 
-**⚠️ CRITICAL**: No user story work can begin until this phase is complete
-
-- [ ] T009 Create TypeScript types in src/types/auth.ts (AuthConfig, AuthItem)
-- [ ] T010 [P] Create TypeScript types in src/types/itinerary.ts (ItineraryDay, ItineraryItem)
-- [ ] T011 [P] Create TypeScript types in src/types/travelInfo.ts (TravelInfo, InfoItem)
-- [ ] T012 [P] Create TypeScript types in src/types/common.ts (4 error types: GoogleSheetError, InvalidPasswordError, PasswordExpiredError, ParsingError)
-- [ ] T013 Implement googleSheetParser utility in src/utils/googleSheetParser.ts (3 functions: parseGoogleSheetCSV, getGoogleSheetCSVUrl, fetchGoogleSheetCSV with PapaParse 5.x)
-- [ ] T014 [P] Implement dateHelper utility in src/utils/dateHelper.ts (4 functions: formatDate, parseDate, daysBetween, getToday)
-- [ ] T015 [P] Implement authHelper utility in src/utils/authHelper.ts (4 functions: saveAuthState, loadAuthState, clearAuthState, isLoginValid with 7-day TTL)
-- [ ] T016 Create Vue Router 4.x configuration in src/router/index.ts (Hash mode, 3 routes: /, /itinerary, /travel-info)
-- [ ] T017 Create main App.vue with RouterView and global loading/error states
-- [ ] T018 Create main.ts entry point with Pinia + Router + App mount
-
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+- [ ] T001 建立專案目錄結構（src/、tests/、public/、docs/）
+- [ ] T002 初始化 Vue 3 + Vite 5.x + TypeScript 5.x 專案，依據 package.json 安裝相依套件
+- [ ] T003 [P] 設定 ESLint + Prettier 支援 Vue 3 + TypeScript 嚴格模式
+- [ ] T004 [P] 在 vitest.config.ts 中設定 Vitest 1.x 進行單元/整合測試
+- [ ] T005 [P] 在 playwright.config.ts 中設定 Playwright 1.40+ 進行 E2E 測試
+- [ ] T006 [P] 在 tailwind.config.js 中設定 Tailwind CSS 3.x 及 mobile-first 配置
+- [ ] T007 [P] 建立 .env.example 檔案，包含 VITE_GOOGLE_SHEET_ID 佔位符
+- [ ] T008 [P] 設定 Git pre-commit hooks（lint-staged + Husky）以確保程式碼品質
 
 ---
 
-## Phase 3: User Story 0 — 登入驗證 (Priority: P0) 🔒 Security Gate
+## Phase 2: 基礎架構（必須優先完成）
 
-**Goal**: Implement authentication gate with password validation from Google Sheet, 7-day login persistence, unlimited retry
+**目的**：建立在任何使用者故事實作前必須完成的核心基礎設施
 
-**Independent Test**: 
-- Direct access to / → show login page with password input
-- Valid password (any from Google Sheet "登入設定") → enter /itinerary page
-- Invalid password → error "密碼錯誤，請重新輸入" with unlimited retry
-- Within 7 days → auto-login, direct to /itinerary
-- After 7 days → login expired, show login page
-- Google Sheet "登入設定" missing/empty → error "無法載入登入設定，請聯絡管理員"
+**⚠️ 重要**：此階段完成前，無法開始任何使用者故事的工作
 
-### Implementation for User Story 0
+- [ ] T009 在 src/types/auth.ts 中建立 TypeScript 型別（AuthConfig、AuthItem）
+- [ ] T010 [P] 在 src/types/itinerary.ts 中建立 TypeScript 型別（ItineraryDay、ItineraryItem）
+- [ ] T011 [P] 在 src/types/travelInfo.ts 中建立 TypeScript 型別（TravelInfo、InfoItem）
+- [ ] T012 [P] 在 src/types/common.ts 中建立 TypeScript 型別（4 個錯誤型別：GoogleSheetError、InvalidPasswordError、PasswordExpiredError、ParsingError）
+- [ ] T013 在 src/utils/googleSheetParser.ts 中實作 googleSheetParser 工具函數（3 個函數：parseGoogleSheetCSV、getGoogleSheetCSVUrl、fetchGoogleSheetCSV，使用 PapaParse 5.x）
+- [ ] T014 [P] 在 src/utils/dateHelper.ts 中實作 dateHelper 工具函數（4 個函數：formatDate、parseDate、daysBetween、getToday）
+- [ ] T015 [P] 在 src/utils/authHelper.ts 中實作 authHelper 工具函數（4 個函數：saveAuthState、loadAuthState、clearAuthState、isLoginValid，支援 7 天有效期）
+- [ ] T016 在 src/router/index.ts 中建立 Vue Router 4.x 配置（Hash 模式，3 個路由：/、/itinerary、/travel-info）
+- [ ] T017 建立主要 App.vue 檔案，包含 RouterView 與全域 loading/error 狀態
+- [ ] T018 建立 main.ts 進入點，包含 Pinia + Router + App 掛載
 
-- [ ] T019 [P] [US0] Create AuthStore in src/stores/auth.ts (3 state: isAuthenticated/authTimestamp/passwordList, 3 getters: isLoginValid/validPasswords/remainingTime, 5 actions: loadAuthConfig/validatePassword/login/logout/restoreAuthState)
-- [ ] T020 [P] [US0] Create LoginView page in src/views/LoginView.vue (page layout with title, description slot, password input, error display)
-- [ ] T021 [P] [US0] Create LoginForm component in src/components/auth/LoginForm.vue (props: loading/error, emits: submit, slots: title/description)
-- [ ] T022 [US0] Implement authentication router guard in src/router/index.ts (check isLoginValid, redirect to / with query param if not authenticated)
-- [ ] T023 [US0] Implement deep link restoration guard in src/router/index.ts (restore redirect param after login)
-- [ ] T024 [US0] Add login/logout functionality to LoginView (call AuthStore actions, handle errors, navigate to /itinerary on success)
-
-### Tests for User Story 0
-
-- [ ] T025 [P] [US0] Unit test for AuthStore in tests/unit/stores/auth.spec.ts (test loadAuthConfig, validatePassword, login/logout, isLoginValid 7-day expiry)
-- [ ] T026 [P] [US0] Unit test for authHelper in tests/unit/utils/authHelper.spec.ts (test saveAuthState, loadAuthState, clearAuthState, 7-day TTL calculation)
-- [ ] T027 [US0] Integration test for login flow in tests/integration/auth-flow.spec.ts (test full login journey: load config → validate → login → check LocalStorage → logout)
-- [ ] T028 [US0] E2E test for login scenarios in tests/e2e/login.spec.ts (6 scenarios from spec.md: unauthenticated, valid password, invalid password, within 7 days, after 7 days, missing config)
-
-**Checkpoint**: User Story 0 complete - Authentication gate functional, login page accessible, password validation working, 7-day persistence verified
+**檢查點**：基礎設施就緒 - 使用者故事現在可以開始平行實作
 
 ---
 
-## Phase 4: User Story 1 — 檢視每日行程 (Priority: P1) 🎯 MVP Core
+## Phase 3: 使用者故事 0 — 登入驗證（優先座：P0）🔒 安全閘道
 
-**Goal**: Display daily itinerary with card-based UI, Emoji display, date navigation (left/right), RWD support
+**目標**：實作驗證閘道，從 Google Sheet 驗證密碼，7 天登入持續性，無限重試
 
-**Independent Test**: 
-- Valid Google Sheet with 行程 data → display card-based itinerary with Emoji and key info
-- Multi-day trip → swipe/tab navigation works, date switch <1s, content consistent
-- Mobile & desktop → clear display with responsive layout
+**獨立測試**： 
+- 直接訪問 / → 顯示登入頁面及密碼輸入框
+- 有效密碼（Google Sheet 「登入設定」中的任何一個）→ 進入 /itinerary 頁面
+- 無效密碼 → 顯示錯誤「密碼錯誤，請重新輸入」，允許無限重試
+- 7 天內 → 自動登入，直接前往 /itinerary
+- 7 天後 → 登入過期，顯示登入頁面
+- Google Sheet 「登入設定」遺失/空白 → 顯示錯誤「無法載入登入設定，請聯絡管理員」
 
-### Implementation for User Story 1
+### 使用者故事 0 實作
 
-- [ ] T029 [P] [US1] Create ItineraryStore in src/stores/itinerary.ts (6 state: days/currentDate/searchQuery/completedItems/loading/error, 6 getters: currentDayItems/availableDates/filteredItems/tagStatistics/totalCost/completionPercentage, 8 actions: loadItinerary/switchDate/previousDay/nextDay/setSearchQuery/toggleComplete/clearCompletionState/restoreCompletionState)
-- [ ] T030 [P] [US1] Create ItineraryView page in src/views/ItineraryView.vue (page layout with date navigation, day card list, loading/error states)
-- [ ] T031 [P] [US1] Create ItineraryDayCard component in src/components/itinerary/ItineraryDayCard.vue (props: day/isActive, emits: click, display date header with total cost and completion stats)
-- [ ] T032 [P] [US1] Create ItineraryItemCard component in src/components/itinerary/ItineraryItemCard.vue (props: item, emits: toggle-complete/open-map, slots: actions, display 12 fields with Emoji, category-specific fields)
-- [ ] T033 [US1] Implement date navigation logic in ItineraryView (previousDay/nextDay buttons, keyboard arrows, touch swipe with hammerjs or native touch events)
-- [ ] T034 [US1] Integrate Google Maps links in ItineraryItemCard (open in new tab on mobile, Google Maps app on native)
-- [ ] T035 [US1] Add completion state toggle in ItineraryItemCard (checkbox with visual feedback: check icon + gray scale)
-- [ ] T036 [US1] Restore completion state on ItineraryStore initialization (call restoreCompletionState from LocalStorage)
+- [ ] T019 [P] [US0] 在 src/stores/auth.ts 中建立 AuthStore（3 個 state：isAuthenticated/authTimestamp/passwordList，3 個 getters：isLoginValid/validPasswords/remainingTime，5 個 actions：loadAuthConfig/validatePassword/login/logout/restoreAuthState）
+- [ ] T020 [P] [US0] 在 src/views/LoginView.vue 中建立 LoginView 頁面（頁面版配包含標題、說明槽位、密碼輸入框、錯誤顯示）
+- [ ] T021 [P] [US0] 在 src/components/auth/LoginForm.vue 中建立 LoginForm 元件（props: loading/error，emits: submit，slots: title/description）
+- [ ] T022 [US0] 在 src/router/index.ts 中實作驗證路由守衛（檢查 isLoginValid，若未驗證則重導向至 / 並帶查詢參數）
+- [ ] T023 [US0] 在 src/router/index.ts 中實作深連結還原守衛（登入後還原 redirect 參數）
+- [ ] T024 [US0] 在 LoginView 中增加登入/登出功能（呼叫 AuthStore actions、處理錯誤、成功時導航至 /itinerary）
 
-### Tests for User Story 1
+### 使用者故事 0 測試
 
-- [ ] T037 [P] [US1] Unit test for ItineraryStore in tests/unit/stores/itinerary.spec.ts (test loadItinerary, switchDate, previousDay/nextDay, filteredItems, totalCost, completionPercentage, toggleComplete)
-- [ ] T038 [P] [US1] Unit test for dateHelper in tests/unit/utils/dateHelper.spec.ts (test formatDate, parseDate, daysBetween, getToday)
-- [ ] T039 [P] [US1] Component test for ItineraryItemCard in tests/unit/components/ItineraryItemCard.spec.ts (test props rendering, emits toggle-complete/open-map, completion visual state)
-- [ ] T040 [US1] Integration test for itinerary flow in tests/integration/itinerary-flow.spec.ts (test load Google Sheet → display cards → switch date → toggle complete → check LocalStorage)
-- [ ] T041 [US1] E2E test for itinerary scenarios in tests/e2e/itinerary.spec.ts (test multi-day navigation, date switch <1s, completion state persistence, empty state display)
+- [ ] T025 [P] [US0] 在 tests/unit/stores/auth.spec.ts 中為 AuthStore 撰寫單元測試（測試 loadAuthConfig、validatePassword、login/logout、isLoginValid 7 天過期）
+- [ ] T026 [P] [US0] 在 tests/unit/utils/authHelper.spec.ts 中為 authHelper 撰寫單元測試（測試 saveAuthState、loadAuthState、clearAuthState、7 天 TTL 計算）
+- [ ] T027 [US0] 在 tests/integration/auth-flow.spec.ts 中為登入流程撰寫整合測試（測試完整登入流程：載入配置 → 驗證 → 登入 → 檢查 LocalStorage → 登出）
+- [ ] T028 [US0] 在 tests/e2e/login.spec.ts 中為登入場景撰寫 E2E 測試（spec.md 中的 6 個場景：未驗證、有效密碼、無效密碼、7 天內、7 天後、配置遺失）
 
-**Checkpoint**: User Story 1 complete - Daily itinerary view functional, date navigation working, completion state persistent, RWD verified
-
----
-
-## Phase 5: User Story 2 — 搜尋／過濾行程 (Priority: P2)
-
-**Goal**: Keyword search with 300ms debounce, category filter (景點/餐廳/交通/住宿), preserve date navigation
-
-**Independent Test**: 
-- Data loaded → keyword search "台北101" → show matching cards with preserved date navigation
-- Category filter "餐廳" → show only restaurant cards
-- Search + filter combined → show cards matching both criteria
-
-### Implementation for User Story 2
-
-- [ ] T042 [P] [US2] Create SearchBar component in src/components/itinerary/SearchBar.vue (props: modelValue/placeholder/clearable, emits: update:modelValue/search, 300ms debounce with lodash or native setTimeout)
-- [ ] T043 [P] [US2] Implement searchHelper utility in src/utils/searchHelper.ts (3 functions: searchItineraryItems, matchesSearchQuery, getTagStatistics)
-- [ ] T044 [US2] Add SearchBar to ItineraryView (bind to ItineraryStore.searchQuery, call setSearchQuery on input)
-- [ ] T045 [US2] Add category filter buttons to ItineraryView (4 buttons: 景點/餐廳/交通/住宿, multi-select with toggle)
-- [ ] T046 [US2] Implement filteredItems getter in ItineraryStore (combine searchQuery + category filter, apply to currentDayItems)
-
-### Tests for User Story 2
-
-- [ ] T047 [P] [US2] Unit test for searchHelper in tests/unit/utils/searchHelper.spec.ts (test searchItineraryItems with keyword, matchesSearchQuery with title/location/tags, getTagStatistics)
-- [ ] T048 [P] [US2] Component test for SearchBar in tests/unit/components/SearchBar.spec.ts (test v-model binding, emit search on Enter, 300ms debounce, clearable button)
-- [ ] T049 [US2] Integration test for search/filter flow in tests/integration/search-filter-flow.spec.ts (test keyword search → filter results → category filter → combined criteria → preserve date navigation)
-
-**Checkpoint**: User Story 2 complete - Search and filter functional, 300ms debounce working, date navigation preserved
+**檢查點**：使用者故事 0 完成 - 驗證閘道運作正常、登入頁面可存取、密碼驗證正常、7 天持續性已驗證
 
 ---
 
-## Phase 6: User Story 4 — 檢視旅遊資訊 (Priority: P2)
+## Phase 4: 使用者故事 1 — 檢視每日行程（優先座：P1）🎯 MVP 核心
 
-**Goal**: Display travel info (packing list, notes, emergency contacts, budget) in separate tab, category filter, packing state persistence
+**目標**：以卡片式 UI 顯示每日行程、Emoji 顯示、日期導航（左/右）、支援 RWD
 
-**Independent Test**: 
-- Click "旅遊資訊" tab → display category list and info cards
-- Multiple categories → select "攜帶物品" → show only packing items
-- Packing list item checked → visual mark (check icon + strikethrough) + state persisted to LocalStorage
+**獨立測試**： 
+- 有效的 Google Sheet 含行程資料 → 顯示卡片式行程，包含 Emoji 與關鍵資訊
+- 多日旅遊 → 滑動/標籤導航正常，日期切換 <1s，內容一致
+- 行動與桌面 → 清晰顯示，响應式版面配置
 
-### Implementation for User Story 4
+### 使用者故事 1 實作
 
-- [ ] T050 [P] [US4] Create TravelInfoStore in src/stores/travelInfo.ts (5 state: items/selectedCategory/packedItems/loading/error, 5 getters: categories/filteredItems/itemsByCategory/packingList/packingProgress, 5 actions: loadTravelInfo/filterByCategory/togglePacked/clearPackingState/restorePackingState)
-- [ ] T051 [P] [US4] Create TravelInfoView page in src/views/TravelInfoView.vue (page layout with category filter, info card list, packing progress bar)
-- [ ] T052 [P] [US4] Create TravelInfoCard component in src/components/travelInfo/TravelInfoCard.vue (props: item/showPackingCheckbox, emits: toggle-packed, display category-specific fields)
-- [ ] T053 [US4] Add "旅遊資訊" route to Vue Router in src/router/index.ts (path: /travel-info, component: TravelInfoView)
-- [ ] T054 [US4] Add tab navigation in App.vue or main layout (2 tabs: 行程/旅遊資訊, highlight active tab)
-- [ ] T055 [US4] Implement category filter in TravelInfoView (buttons: 攜帶物品/注意事項/緊急聯絡/預算/其他, call filterByCategory)
-- [ ] T056 [US4] Add packing checkbox to TravelInfoCard (show only for category="打包清單", toggle visual state + call togglePacked)
-- [ ] T057 [US4] Restore packing state on TravelInfoStore initialization (call restorePackingState from LocalStorage)
+- [ ] T029 [P] [US1] 在 src/stores/itinerary.ts 中建立 ItineraryStore（6 個 state: days/currentDate/searchQuery/completedItems/loading/error，6 個 getters: currentDayItems/availableDates/filteredItems/tagStatistics/totalCost/completionPercentage，8 個 actions: loadItinerary/switchDate/previousDay/nextDay/setSearchQuery/toggleComplete/clearCompletionState/restoreCompletionState）
+- [ ] T030 [P] [US1] 在 src/views/ItineraryView.vue 中建立 ItineraryView 頁面（頁面版配包含日期導航、日行程卡片列表、loading/error 狀態）
+- [ ] T031 [P] [US1] 在 src/components/itinerary/ItineraryDayCard.vue 中建立 ItineraryDayCard 元件（props: day/isActive，emits: click，顯示日期標題及總費用與完成統計）
+- [ ] T032 [P] [US1] 在 src/components/itinerary/ItineraryItemCard.vue 中建立 ItineraryItemCard 元件（props: item，emits: toggle-complete/open-map，slots: actions，顯示 12 個欄位及 Emoji、分類特定欄位）
+- [ ] T033 [US1] 在 ItineraryView 中實作日期導航邏輯（previousDay/nextDay 按鈕、鍵盤箭頭、觸控滑動，使用 hammerjs 或原生 touch events）
+- [ ] T034 [US1] 在 ItineraryItemCard 中整合 Google Maps 連結（行動版在新分頁開啟，原生開啟 Google Maps app）
+- [ ] T035 [US1] 在 ItineraryItemCard 中新增完成狀態切換（勾選框及視覺回饋：勾選圖示 + 灰階）
+- [ ] T036 [US1] 在 ItineraryStore 初始化時還原完成狀態（從 LocalStorage 呼叫 restoreCompletionState）
 
-### Tests for User Story 4
+### 使用者故事 1 測試
 
-- [ ] T058 [P] [US4] Unit test for TravelInfoStore in tests/unit/stores/travelInfo.spec.ts (test loadTravelInfo, filterByCategory, togglePacked, packingProgress, itemsByCategory)
-- [ ] T059 [P] [US4] Component test for TravelInfoCard in tests/unit/components/TravelInfoCard.spec.ts (test props rendering, emit toggle-packed, packing checkbox conditional display)
-- [ ] T060 [US4] Integration test for travel info flow in tests/integration/travel-info-flow.spec.ts (test load Google Sheet → display categories → filter by category → toggle packed → check LocalStorage)
+- [ ] T037 [P] [US1] 在 tests/unit/stores/itinerary.spec.ts 中為 ItineraryStore 撰寫單元測試（測試 loadItinerary、switchDate、previousDay/nextDay、filteredItems、totalCost、completionPercentage、toggleComplete）
+- [ ] T038 [P] [US1] 在 tests/unit/utils/dateHelper.spec.ts 中為 dateHelper 撰寫單元測試（測試 formatDate、parseDate、daysBetween、getToday）
+- [ ] T039 [P] [US1] 在 tests/unit/components/ItineraryItemCard.spec.ts 中為 ItineraryItemCard 撰寫元件測試（測試 props 渲染、emits toggle-complete/open-map、完成視覺狀態）
+- [ ] T040 [US1] 在 tests/integration/itinerary-flow.spec.ts 中為行程流程撰寫整合測試（測試載入 Google Sheet → 顯示卡片 → 切換日期 → 切換完成 → 檢查 LocalStorage）
+- [ ] T041 [US1] 在 tests/e2e/itinerary.spec.ts 中為行程場景撰寫 E2E 測試（測試多日導航、日期切換 <1s、完成狀態持續、空狀態顯示）
 
-**Checkpoint**: User Story 4 complete - Travel info view functional, category filter working, packing state persistent
-
----
-
-## Phase 7: User Story 3 — 分享與深連結 (Priority: P3)
-
-**Goal**: Deep link support with URL params (?date=YYYY-MM-DD&item=<slug>), auto-navigate to specific date or item
-
-**Independent Test**: 
-- Open URL with ?date=2024-01-15 → page automatically switches to that date
-- Open URL with ?item=taipei-101 → page finds item's date and switches + scrolls to item card
-- Deep link with unauthenticated state → show login page first, then navigate after login
-
-### Implementation for User Story 3
-
-- [ ] T061 [P] [US3] Implement deepLinkHelper utility in src/utils/deepLinkHelper.ts (3 functions: getQueryParam, setQueryParams, generateDeepLink)
-- [ ] T062 [US3] Add deep link handling to ItineraryView (onMounted: check URL params → call switchDate if date param exists → scroll to item if item param exists)
-- [ ] T063 [US3] Preserve deep link params during login flow in authentication guard (store redirect URL with query params → restore after login success)
-- [ ] T064 [US3] Add share button to ItineraryItemCard (copy deep link URL to clipboard, show toast "連結已複製")
-
-### Tests for User Story 3
-
-- [ ] T065 [P] [US3] Unit test for deepLinkHelper in tests/unit/utils/deepLinkHelper.spec.ts (test getQueryParam, setQueryParams without page refresh, generateDeepLink URL format)
-- [ ] T066 [US3] Integration test for deep link flow in tests/integration/deep-link-flow.spec.ts (test URL with date param → auto switch date, URL with item param → find date + scroll to item)
-- [ ] T067 [US3] E2E test for deep link scenarios in tests/e2e/deep-link.spec.ts (test direct access with deep link params, deep link with unauthenticated state → login → navigate)
-
-**Checkpoint**: User Story 3 complete - Deep link functional, URL params working, share button enabled
+**檢查點**：使用者故事 1 完成 - 每日行程檢視功能正常、日期導航運作、完成狀態持續、RWD 已驗證
 
 ---
 
-## Phase 8: Polish & Cross-Cutting Concerns
+## Phase 5: 使用者故事 2 — 搜尋／過濾行程（優先座：P2）
 
-**Purpose**: Improvements affecting multiple user stories, PWA setup, performance optimization
+**目標**：關鍵字搜尋帶 300ms debounce、分類過濾器（景點/餐廳/交通/住宿）、保留日期導航
 
-- [ ] T068 [P] Create UIStore in src/stores/ui.ts (4 state: loading/error/isOffline/toasts, 2 getters: hasError/errorMessage, 5 actions: showError/clearError/setOffline/showToast/removeToast)
-- [ ] T069 [P] Create Loading component in src/components/common/Loading.vue (spinner + loading text, use Tailwind for animation)
-- [ ] T070 [P] Create ErrorMessage component in src/components/common/ErrorMessage.vue (props: error/retry, display error type + message + retry button)
-- [ ] T071 [P] Create PWAPrompt component in src/components/common/PWAPrompt.vue (show banner for iOS A2HS, detect PWA installability)
-- [ ] T072 [P] Setup PWA with vite-plugin-pwa in vite.config.ts (manifest.json: name/theme_color/icons, service worker with Workbox: NetworkFirst for Google Sheets CSV, CacheFirst for static assets)
-- [ ] T073 [P] Add offline detection to App.vue (listen to online/offline events, call UIStore.setOffline, show offline banner)
-- [ ] T074 [P] Add global error handling to App.vue (catch unhandled errors, call UIStore.showError with retry function)
-- [ ] T075 [P] Optimize images with lazy loading in ItineraryItemCard (use native loading="lazy", add placeholder during load, fallback image on error)
-- [ ] T076 [P] Add favicon and app icons to public/ (favicon.ico + manifest icons: 192x192, 512x512)
-- [ ] T077 [P] Add meta tags to index.html (Open Graph: title/description/image, viewport for mobile, theme-color)
-- [ ] T078 E2E test for offline mode in tests/e2e/offline.spec.ts (test PWA offline mode: cache data → go offline → browse itinerary → date navigation → search → show offline banner)
-- [ ] T079 Setup Lighthouse CI in .github/workflows/lighthouse.yml (run on PR, check performance/accessibility/PWA scores: Performance ≥90, Accessibility ≥90, PWA ≥90)
-- [ ] T080 [P] Performance optimization: virtual scrolling for long lists (use vue-virtual-scroller or native Intersection Observer for >100 items)
-- [ ] T081 [P] Documentation: Update README.md with feature description, setup guide, deployment instructions
-- [ ] T082 [P] Documentation: Create docs/ARCHITECTURE.md with store/component/utility structure diagram
-- [ ] T083 [P] Run quickstart.md validation (verify all setup steps work, test sample Google Sheet, run dev server, run tests)
+**獨立測試**： 
+- 資料已載入 → 關鍵字搜尋「台北101」→ 顯示符合的卡片並保留日期導航
+- 分類過濾「餐廳」→ 僅顯示餐廳卡片
+- 搜尋 + 過濾器結合 → 顯示同時符合兩項條件的卡片
 
-**Checkpoint**: All polish tasks complete - PWA enabled, offline mode working, performance optimized, documentation updated
+### 使用者故事 2 實作
+
+- [ ] T042 [P] [US2] 在 src/components/itinerary/SearchBar.vue 中建立 SearchBar 元件（props: modelValue/placeholder/clearable，emits: update:modelValue/search，300ms debounce 使用 lodash 或原生 setTimeout）
+- [ ] T043 [P] [US2] 在 src/utils/searchHelper.ts 中實作 searchHelper 工具函數（3 個函數：searchItineraryItems、matchesSearchQuery、getTagStatistics）
+- [ ] T044 [US2] 在 ItineraryView 中新增 SearchBar（繫定至 ItineraryStore.searchQuery，輸入時呼叫 setSearchQuery）
+- [ ] T045 [US2] 在 ItineraryView 中新增分類過濾按鈕（4 個按鈕：景點/餐廳/交通/住宿，支援多選切換）
+- [ ] T046 [US2] 在 ItineraryStore 中實作 filteredItems getter（結合 searchQuery + 分類過濾器，應用於 currentDayItems）
+
+### 使用者故事 2 測試
+
+- [ ] T047 [P] [US2] 在 tests/unit/utils/searchHelper.spec.ts 中為 searchHelper 撰寫單元測試（測試 searchItineraryItems 關鍵字、matchesSearchQuery 標題/地點/標籤、getTagStatistics）
+- [ ] T048 [P] [US2] 在 tests/unit/components/SearchBar.spec.ts 中為 SearchBar 撰寫元件測試（測試 v-model 繫定、Enter 觸發 search emit、300ms debounce、清除按鈕）
+- [ ] T049 [US2] 在 tests/integration/search-filter-flow.spec.ts 中為搜尋/過濾流程撰寫整合測試（測試關鍵字搜尋 → 過濾結果 → 分類過濾 → 組合條件 → 保留日期導航）
+
+**檢查點**：使用者故事 2 完成 - 搜尋與過濾功能正常、300ms debounce 運作、日期導航已保留
 
 ---
 
-## Dependencies & Execution Order
+## Phase 6: 使用者故事 4 — 檢視旅遊資訊（優先座：P2）
 
-### Phase Dependencies
+**目標**：在獨立標籤頁中顯示旅遊資訊（打包清單、注意事項、緊急聯絡、預算）、分類過濾器、打包狀態持續性
 
-- **Setup (Phase 1)**: No dependencies - start immediately
-- **Foundational (Phase 2)**: Depends on Setup (Phase 1) completion - **BLOCKS all user stories**
-- **User Story 0 (Phase 3)**: Depends on Foundational (Phase 2) completion - **BLOCKS all other user stories** (authentication gate)
-- **User Story 1 (Phase 4)**: Depends on User Story 0 (Phase 3) completion - Can proceed after authentication works
-- **User Story 2 (Phase 5)**: Depends on User Story 0 (Phase 3) completion - Can run in parallel with User Story 1 or 4
-- **User Story 4 (Phase 6)**: Depends on User Story 0 (Phase 3) completion - Can run in parallel with User Story 1 or 2
-- **User Story 3 (Phase 7)**: Depends on User Story 1 (Phase 4) completion - Needs routing structure from itinerary view
-- **Polish (Phase 8)**: Depends on desired user stories completion - Can start after User Story 0 + 1 (MVP)
+**獨立測試**： 
+- 點擊「旅遊資訊」標籤 → 顯示分類列表與資訊卡片
+- 多個分類 → 選擇「攜帶物品」→ 僅顯示打包項目
+- 打包清單項目勾選 → 視覺標記（勾選圖示 + 刪除線）+ 狀態持續化至 LocalStorage
 
-### User Story Dependencies
+### 使用者故事 4 實作
+
+- [ ] T050 [P] [US4] 在 src/stores/travelInfo.ts 中建立 TravelInfoStore（5 個 state: items/selectedCategory/packedItems/loading/error，5 個 getters: categories/filteredItems/itemsByCategory/packingList/packingProgress，5 個 actions: loadTravelInfo/filterByCategory/togglePacked/clearPackingState/restorePackingState）
+- [ ] T051 [P] [US4] 在 src/views/TravelInfoView.vue 中建立 TravelInfoView 頁面（頁面版配包含分類過濾器、資訊卡片列表、打包進度條）
+- [ ] T052 [P] [US4] 在 src/components/travelInfo/TravelInfoCard.vue 中建立 TravelInfoCard 元件（props: item/showPackingCheckbox，emits: toggle-packed，顯示分類特定欄位）
+- [ ] T053 [US4] 在 src/router/index.ts 中新增「旅遊資訊」路由（path: /travel-info，component: TravelInfoView）
+- [ ] T054 [US4] 在 App.vue 或主版面配置中新增標籤導航（2 個標籤：行程/旅遊資訊，高亮顯示活躍標籤）
+- [ ] T055 [US4] 在 TravelInfoView 中實作分類過濾器（按鈕：攜帶物品/注意事項/緊急聯絡/預算/其他，呼叫 filterByCategory）
+- [ ] T056 [US4] 在 TravelInfoCard 中新增打包勾選框（僅分類為「打包清單」時顯示，切換視覺狀態 + 呼叫 togglePacked）
+- [ ] T057 [US4] 在 TravelInfoStore 初始化時還原打包狀態（從 LocalStorage 呼叫 restorePackingState）
+
+### 使用者故事 4 測試
+
+- [ ] T058 [P] [US4] 在 tests/unit/stores/travelInfo.spec.ts 中為 TravelInfoStore 撰寫單元測試（測試 loadTravelInfo、filterByCategory、togglePacked、packingProgress、itemsByCategory）
+- [ ] T059 [P] [US4] 在 tests/unit/components/TravelInfoCard.spec.ts 中為 TravelInfoCard 撰寫元件測試（測試 props 渲染、emit toggle-packed、打包勾選框條件顯示）
+- [ ] T060 [US4] 在 tests/integration/travel-info-flow.spec.ts 中為旅遊資訊流程撰寫整合測試（測試載入 Google Sheet → 顯示分類 → 依分類過濾 → 切換打包 → 檢查 LocalStorage）
+
+**檢查點**：使用者故事 4 完成 - 旅遊資訊檢視功能正常、分類過濾器運作、打包狀態持續性
+
+---
+
+## Phase 7: 使用者故事 3 — 分享與深連結（優先座：P3）
+
+**目標**：支援深連結及 URL 參數（?date=YYYY-MM-DD&item=<slug>），自動導航至特定日期或項目
+
+**獨立測試**： 
+- 開啟帶有 ?date=2024-01-15 的 URL → 頁面自動切換至該日期
+- 開啟帶有 ?item=taipei-101 的 URL → 頁面尋找項目所屬日期並切換 + 捲動至項目卡片
+- 未驗證狀態下的深連結 → 先顯示登入頁面，登入後再導航
+
+### 使用者故事 3 實作
+
+- [ ] T061 [P] [US3] 在 src/utils/deepLinkHelper.ts 中實作 deepLinkHelper 工具函數（3 個函數：getQueryParam、setQueryParams、generateDeepLink）
+- [ ] T062 [US3] 在 ItineraryView 中新增深連結處理（onMounted：檢查 URL 參數 → 若存在 date 參數則呼叫 switchDate → 若存在 item 參數則捲動至項目）
+- [ ] T063 [US3] 在驗證守衛中保留登入流程的深連結參數（儲存帶查詢參數的重導向 URL → 登入成功後還原）
+- [ ] T064 [US3] 在 ItineraryItemCard 中新增分享按鈕（複製深連結 URL 至剪貼簿，顯示提示訊息「連結已複製」）
+
+### 使用者故事 3 測試
+
+- [ ] T065 [P] [US3] 在 tests/unit/utils/deepLinkHelper.spec.ts 中為 deepLinkHelper 撰寫單元測試（測試 getQueryParam、setQueryParams 不重整頁面、generateDeepLink URL 格式）
+- [ ] T066 [US3] 在 tests/integration/deep-link-flow.spec.ts 中為深連結流程撰寫整合測試（測試帶 date 參數的 URL → 自動切換日期，帶 item 參數的 URL → 尋找日期 + 捲動至項目）
+- [ ] T067 [US3] 在 tests/e2e/deep-link.spec.ts 中為深連結場景撰寫 E2E 測試（測試帶深連結參數的直接存取、未驗證狀態下的深連結 → 登入 → 導航）
+
+**檢查點**：使用者故事 3 完成 - 深連結功能正常、URL 參數運作、分享按鈕已啟用
+
+---
+
+## Phase 8: 整體優化與橫切關注
+
+**目的**：影響多個使用者故事的改進、PWA 設定、效能優化
+
+- [ ] T068 [P] 在 src/stores/ui.ts 中建立 UIStore（4 個 state: loading/error/isOffline/toasts，2 個 getters: hasError/errorMessage，5 個 actions: showError/clearError/setOffline/showToast/removeToast）
+- [ ] T069 [P] 在 src/components/common/Loading.vue 中建立 Loading 元件（轉圈 + 載入文字，使用 Tailwind 做動畫）
+- [ ] T070 [P] 在 src/components/common/ErrorMessage.vue 中建立 ErrorMessage 元件（props: error/retry，顯示錯誤型別 + 訊息 + 重試按鈕）
+- [ ] T071 [P] 在 src/components/common/PWAPrompt.vue 中建立 PWAPrompt 元件（為 iOS A2HS 顯示橫幅，偵測 PWA 可安裝性）
+- [ ] T072 [P] 在 vite.config.ts 中設定 PWA 使用 vite-plugin-pwa（manifest.json: name/theme_color/icons，service worker 使用 Workbox：Google Sheets CSV 用 NetworkFirst，靜態資產用 CacheFirst）
+- [ ] T073 [P] 在 App.vue 中新增離線偵測（監聽 online/offline 事件，呼叫 UIStore.setOffline，顯示離線橫幅）
+- [ ] T074 [P] 在 App.vue 中新增全域錯誤處理（捕捉未處理的錯誤，呼叫 UIStore.showError 並提供重試函數）
+- [ ] T075 [P] 在 ItineraryItemCard 中使用懶加載優化圖片（使用原生 loading="lazy"，加載時顯示佔位圖，錯誤時顯示備援圖片）
+- [ ] T076 [P] 在 public/ 中新增 favicon 與 app 圖示（favicon.ico + manifest 圖示：192x192、512x512）
+- [ ] T077 [P] 在 index.html 中新增 meta 標籤（Open Graph: title/description/image，mobile 用 viewport，theme-color）
+- [ ] T078 在 tests/e2e/offline.spec.ts 中為離線模式撰寫 E2E 測試（測試 PWA 離線模式：快取資料 → 離線 → 瀏覽行程 → 日期導航 → 搜尋 → 顯示離線橫幅）
+- [ ] T079 在 .github/workflows/lighthouse.yml 中設定 Lighthouse CI（在 PR 時執行，檢查 performance/accessibility/PWA 分數：Performance ≥90、Accessibility ≥90、PWA ≥90）
+- [ ] T080 [P] 效能優化：長列表虛擬捲動（超過 100 項目時使用 vue-virtual-scroller 或原生 Intersection Observer）
+- [ ] T081 [P] 文件：更新 README.md，包含功能說明、設置指南、部署指示
+- [ ] T082 [P] 文件：建立 docs/ARCHITECTURE.md，包含 store/component/utility 結構圖
+- [ ] T083 [P] 執行 quickstart.md 驗證（驗證所有設置步驟運作、測試範例 Google Sheet、執行開發伺服器、執行測試）
+
+**檢查點**：所有優化任務完成 - PWA 已啟用、離線模式運作、效能已優化、文件已更新
+
+---
+
+## 依賴關係與執行順序
+
+### 階段依賴
+
+- **專案設置（Phase 1）**：無依賴 - 可立即開始
+- **基礎架構（Phase 2）**：依賴專案設置（Phase 1）完成 - **阻擋所有使用者故事**
+- **使用者故事 0（Phase 3）**：依賴基礎架構（Phase 2）完成 - **阻擋所有其他使用者故事**（驗證閘道）
+- **使用者故事 1（Phase 4）**：依賴使用者故事 0（Phase 3）完成 - 驗證功能後可繼續
+- **使用者故事 2（Phase 5）**：依賴使用者故事 0（Phase 3）完成 - 可與使用者故事 1 或 4 平行執行
+- **使用者故事 4（Phase 6）**：依賴使用者故事 0（Phase 3）完成 - 可與使用者故事 1 或 2 平行執行
+- **使用者故事 3（Phase 7）**：依賴使用者故事 1（Phase 4）完成 - 需要行程檢視的路由結構
+- **整體優化（Phase 8）**：依賴所需使用者故事完成 - 可在使用者故事 0 + 1（MVP）後開始
+
+### 使用者故事依賴
 
 ```
-Phase 1 (Setup)
+Phase 1 (專案設置)
     ↓
-Phase 2 (Foundational) ← MUST COMPLETE BEFORE USER STORIES
+Phase 2 (基礎架構) ← 必須在使用者故事前完成
     ↓
-Phase 3 (US0 Login) ← MUST COMPLETE BEFORE OTHER USER STORIES
+Phase 3 (US0 登入) ← 必須在其他使用者故事前完成
     ↓
-    ├─→ Phase 4 (US1 Itinerary) ← MVP Core
-    ├─→ Phase 5 (US2 Search/Filter) ← Can run parallel with US1 or US4
-    └─→ Phase 6 (US4 Travel Info) ← Can run parallel with US1 or US2
+    ├─→ Phase 4 (US1 行程檢視) ← MVP 核心
+    ├─→ Phase 5 (US2 搜尋/過濾) ← 可與 US1 或 US4 平行執行
+    └─→ Phase 6 (US4 旅遊資訊) ← 可與 US1 或 US2 平行執行
          ↓
-         Phase 7 (US3 Deep Links) ← Depends on US1 routing
+         Phase 7 (US3 深連結) ← 依賴 US1 路由
               ↓
-              Phase 8 (Polish) ← Affects all user stories
+              Phase 8 (整體優化) ← 影響所有使用者故事
 ```
 
-### Within Each User Story
+### 各使用者故事內部
 
-1. **Tests MUST be written FIRST** (write test → verify it fails → implement → verify it passes)
-2. **Stores before components** (data layer before UI)
-3. **Utilities before stores** (helper functions before state management)
-4. **Core implementation before integration** (base features before cross-feature integration)
-5. **Story complete before moving to next priority** (validate independently)
+1. **測試必須優先撰寫**（撰寫測試 → 驗證失敗 → 實作 → 驗證通過）
+2. **Stores 在元件之前**（資料層在 UI 之前）
+3. **工具函數在 stores 之前**（輔助函數在狀態管理之前）
+4. **核心實作在整合之前**（基礎功能在跨功能整合之前）
+5. **故事完成後再移動至下一優先座**（獨立驗證）
 
-### Parallel Opportunities
+### 平行執行機會
 
-**Phase 1 (Setup)**: All tasks marked [P] can run in parallel (T003-T008)
+**Phase 1（專案設置）**：所有標記 [P] 的任務可平行執行（T003-T008）
 
-**Phase 2 (Foundational)**: All tasks marked [P] can run in parallel within groups:
-- Types: T010, T011, T012 can run together
-- Utilities: T014, T015 can run together
+**Phase 2（基礎架構）**：所有標記 [P] 的任務可在組內平行執行：
+- 型別：T010、T011、T012 可一起執行
+- 工具函數：T014、T015 可一起執行
 
-**User Story 0 (Login)**: 
-- Implementation: T019, T020, T021 can run in parallel (store, view, component in different files)
-- Tests: T025, T026 can run in parallel (different test files)
+**使用者故事 0（登入）**：
+- 實作：T019、T020、T021 可平行執行（store、view、component 在不同檔案）
+- 測試：T025、T026 可平行執行（不同測試檔案）
 
-**User Story 1 (Itinerary)**:
-- Implementation: T029, T030, T031, T032 can run in parallel (store, view, 2 components)
-- Tests: T037, T038, T039 can run in parallel (different test files)
+**使用者故事 1（行程檢視）**：
+- 實作：T029、T030、T031、T032 可平行執行（store、view、2 個 components）
+- 測試：T037、T038、T039 可平行執行（不同測試檔案）
 
-**User Story 2 (Search/Filter)**:
-- Implementation: T042, T043 can run in parallel (component, utility)
-- Tests: T047, T048 can run in parallel (different test files)
+**使用者故事 2（搜尋/過濾）**：
+- 實作：T042、T043 可平行執行（component、utility）
+- 測試：T047、T048 可平行執行（不同測試檔案）
 
-**User Story 4 (Travel Info)**:
-- Implementation: T050, T051, T052 can run in parallel (store, view, component)
-- Tests: T058, T059 can run in parallel (different test files)
+**使用者故事 4（旅遊資訊）**：
+- 實作：T050、T051、T052 可平行執行（store、view、component）
+- 測試：T058、T059 可平行執行（不同測試檔案）
 
-**User Story 3 (Deep Links)**:
-- Tests: T065 can run independently
+**使用者故事 3（深連結）**：
+- 測試：T065 可獨立執行
 
-**Phase 8 (Polish)**: Most tasks marked [P] can run in parallel (T068-T077, T080-T082)
+**Phase 8（整體優化）**：大部分標記 [P] 的任務可平行執行（T068-T077、T080-T082）
 
-**Multiple User Stories in Parallel** (if team capacity allows):
-- After **US0 (Login)** completes: US1, US2, US4 can all start in parallel by different developers
-- After **US1 (Itinerary)** completes: US3 can start
+**多個使用者故事平行**（若團隊人力充足）：
+- **US0（登入）**完成後：US1、US2、US4 可由不同開發者平行開始
+- **US1（行程檢視）**完成後：US3 可開始
 
 ---
 
-## Parallel Example: User Story 1
+## 平行執行範例：使用者故事 1
 
 ```bash
-# Launch all parallelizable implementation tasks for User Story 1 together:
-Task T029: "Create ItineraryStore in src/stores/itinerary.ts"
-Task T030: "Create ItineraryView page in src/views/ItineraryView.vue"
-Task T031: "Create ItineraryDayCard component in src/components/itinerary/ItineraryDayCard.vue"
-Task T032: "Create ItineraryItemCard component in src/components/itinerary/ItineraryItemCard.vue"
+# 同時啟動使用者故事 1 的所有可平行實作任務：
+Task T029: "在 src/stores/itinerary.ts 中建立 ItineraryStore"
+Task T030: "在 src/views/ItineraryView.vue 中建立 ItineraryView 頁面"
+Task T031: "在 src/components/itinerary/ItineraryDayCard.vue 中建立 ItineraryDayCard 元件"
+Task T032: "在 src/components/itinerary/ItineraryItemCard.vue 中建立 ItineraryItemCard 元件"
 
-# Then launch sequential integration tasks:
-Task T033: "Implement date navigation logic in ItineraryView"
-Task T034: "Integrate Google Maps links in ItineraryItemCard"
-Task T035: "Add completion state toggle in ItineraryItemCard"
-Task T036: "Restore completion state on ItineraryStore initialization"
+# 然後啟動順序整合任務：
+Task T033: "在 ItineraryView 中實作日期導航邏輯"
+Task T034: "在 ItineraryItemCard 中整合 Google Maps 連結"
+Task T035: "在 ItineraryItemCard 中新增完成狀態切換"
+Task T036: "在 ItineraryStore 初始化時還原完成狀態"
 
-# Launch all parallelizable test tasks for User Story 1 together:
-Task T037: "Unit test for ItineraryStore in tests/unit/stores/itinerary.spec.ts"
-Task T038: "Unit test for dateHelper in tests/unit/utils/dateHelper.spec.ts"
-Task T039: "Component test for ItineraryItemCard in tests/unit/components/ItineraryItemCard.spec.ts"
+# 同時啟動使用者故事 1 的所有可平行測試任務：
+Task T037: "在 tests/unit/stores/itinerary.spec.ts 中為 ItineraryStore 撰寫單元測試"
+Task T038: "在 tests/unit/utils/dateHelper.spec.ts 中為 dateHelper 撰寫單元測試"
+Task T039: "在 tests/unit/components/ItineraryItemCard.spec.ts 中為 ItineraryItemCard 撰寫元件測試"
 
-# Then launch sequential integration/E2E tests:
-Task T040: "Integration test for itinerary flow in tests/integration/itinerary-flow.spec.ts"
-Task T041: "E2E test for itinerary scenarios in tests/e2e/itinerary.spec.ts"
+# 然後啟動順序整合/E2E 測試：
+Task T040: "在 tests/integration/itinerary-flow.spec.ts 中為行程流程撰寫整合測試"
+Task T041: "在 tests/e2e/itinerary.spec.ts 中為行程場景撰寫 E2E 測試"
 ```
 
 ---
 
-## Implementation Strategy
+## 實作策略
 
-### MVP First (User Story 0 + 1 Only)
+### MVP 優先（僅使用者故事 0 + 1）
 
-1. Complete **Phase 1: Setup** (T001-T008) → Project structure ready
-2. Complete **Phase 2: Foundational** (T009-T018) → **CRITICAL GATE** → Types, utilities, router ready
-3. Complete **Phase 3: User Story 0** (T019-T028) → Authentication gate functional
-4. Complete **Phase 4: User Story 1** (T029-T041) → Daily itinerary view working
-5. **STOP and VALIDATE**: Test independently → Login works + Itinerary displays + Date navigation + Completion toggle
-6. **MVP DELIVERABLE**: Deploy to staging/production → Collect feedback
+1. 完成 **Phase 1：專案設置**（T001-T008）→ 專案結構就緒
+2. 完成 **Phase 2：基礎架構**（T009-T018）→ **重要閘道** → 型別、工具函數、路由就緒
+3. 完成 **Phase 3：使用者故事 0**（T019-T028）→ 驗證閘道運作中
+4. 完成 **Phase 4：使用者故事 1**（T029-T041）→ 每日行程檢視運作中
+5. **停止並驗證**：獨立測試 → 登入正常 + 行程顯示 + 日期導航 + 完成切換
+6. **MVP 交付物**：部署至 staging/production → 收集回饋
 
-**MVP Scope**: 
-- ✅ User Story 0 (Login): Password protection with 7-day persistence
-- ✅ User Story 1 (Itinerary): Daily view with card UI, date navigation, completion tracking
-- ❌ User Story 2 (Search/Filter): Optional for MVP
-- ❌ User Story 4 (Travel Info): Optional for MVP
-- ❌ User Story 3 (Deep Links): Optional for MVP
+**MVP 範圍**：
+- ✅ 使用者故事 0（登入）：密碼保護及 7 天持續性
+- ✅ 使用者故事 1（行程檢視）：卡片式每日檢視、日期導航、完成追蹤
+- ❌ 使用者故事 2（搜尋/過濾）：MVP 可選
+- ❌ 使用者故事 4（旅遊資訊）：MVP 可選
+- ❌ 使用者故事 3（深連結）：MVP 可選
 
-### Incremental Delivery (Recommended)
+### 漸進交付（建議）
 
-1. **Foundation** (Phase 1 + 2) → Setup + Core infrastructure → ~8 tasks
-2. **MVP** (Phase 3 + 4) → Login + Itinerary → ~31 tasks → **First Deployment** 🚀
-3. **Enhancement 1** (Phase 5) → Search/Filter → ~8 tasks → **Second Deployment** 🚀
-4. **Enhancement 2** (Phase 6) → Travel Info → ~11 tasks → **Third Deployment** 🚀
-5. **Enhancement 3** (Phase 7) → Deep Links → ~7 tasks → **Fourth Deployment** 🚀
-6. **Polish** (Phase 8) → PWA + Offline + Performance → ~16 tasks → **Final Deployment** 🚀
+1. **基礎設施**（Phase 1 + 2）→ 設置 + 核心基礎設施 → ~8 個任務
+2. **MVP**（Phase 3 + 4）→ 登入 + 行程檢視 → ~31 個任務 → **第一次部署** 🚀
+3. **增強功能 1**（Phase 5）→ 搜尋/過濾 → ~8 個任務 → **第二次部署** 🚀
+4. **增強功能 2**（Phase 6）→ 旅遊資訊 → ~11 個任務 → **第三次部署** 🚀
+5. **增強功能 3**（Phase 7）→ 深連結 → ~7 個任務 → **第四次部署** 🚀
+6. **整體優化**（Phase 8）→ PWA + 離線 + 效能 → ~16 個任務 → **最終部署** 🚀
 
-Each deployment adds value without breaking previous features, allowing early user feedback and validation.
+每次部署增加價值且不破壞現有功能，允許早期用戶回饋與驗證。
 
-### Parallel Team Strategy
+### 平行團隊策略
 
-With multiple developers (recommended team size: 2-3):
+多位開發者（建議團隊規模：2-3 人）：
 
-1. **Together**: Complete Phase 1 (Setup) + Phase 2 (Foundational) → Foundation ready
-2. **Together**: Complete Phase 3 (User Story 0 - Login) → Authentication gate working
-3. **Parallel Split** (after US0 completes):
-   - **Developer A**: Phase 4 (User Story 1 - Itinerary) → T029-T041
-   - **Developer B**: Phase 5 (User Story 2 - Search/Filter) → T042-T049
-   - **Developer C**: Phase 6 (User Story 4 - Travel Info) → T050-T060
-4. **Developer A** (after US1 completes): Phase 7 (User Story 3 - Deep Links) → T061-T067
-5. **Together**: Phase 8 (Polish) → PWA + offline + performance
+1. **一起工作**：完成 Phase 1（專案設置）+ Phase 2（基礎架構）→ 基礎設施就緒
+2. **一起工作**：完成 Phase 3（使用者故事 0 - 登入）→ 驗證閘道運作中
+3. **平行分工**（US0 完成後）：
+   - **開發者 A**：Phase 4（使用者故事 1 - 行程檢視）→ T029-T041
+   - **開發者 B**：Phase 5（使用者故事 2 - 搜尋/過濾）→ T042-T049
+   - **開發者 C**：Phase 6（使用者故事 4 - 旅遊資訊）→ T050-T060
+4. **開發者 A**（US1 完成後）：Phase 7（使用者故事 3 - 深連結）→ T061-T067
+5. **一起工作**：Phase 8（整體優化）→ PWA + 離線 + 效能
 
-**Timeline Estimate** (2-3 developers):
-- Week 1: Setup + Foundational + Login (Phase 1-3)
-- Week 2: Itinerary + Search/Filter + Travel Info (Phase 4-6, parallel)
-- Week 3: Deep Links + Polish (Phase 7-8)
-- Week 4: Testing + Refinement + Deployment
-
----
-
-## Testing Strategy
-
-### Test-Driven Development (TDD) Flow
-
-For each user story:
-
-1. **Write tests FIRST** (mark expected behavior)
-2. **Verify tests FAIL** (no implementation yet)
-3. **Implement minimum code** to pass tests
-4. **Verify tests PASS** (implementation correct)
-5. **Refactor** if needed (keep tests passing)
-
-### Test Coverage Targets (per Constitution)
-
-- **Unit Tests**: ≥80% coverage (stores, utilities, components)
-- **Integration Tests**: All user journeys covered (auth flow, itinerary flow, search/filter flow, travel info flow, deep link flow)
-- **E2E Tests**: All critical scenarios (login 6 scenarios, itinerary multi-day navigation, offline mode)
-
-### Test Execution Order
-
-1. **Unit tests** (fast feedback, run on every file save)
-2. **Integration tests** (moderate speed, run on commit)
-3. **E2E tests** (slow, run on PR + before deployment)
+**時間線估計**（2-3 位開發者）：
+- 第 1 週：專案設置 + 基礎架構 + 登入（Phase 1-3）
+- 第 2 週：行程檢視 + 搜尋/過濾 + 旅遊資訊（Phase 4-6，平行）
+- 第 3 週：深連結 + 整體優化（Phase 7-8）
+- 第 4 週：測試 + 精修 + 部署
 
 ---
 
-## Notes
+## 測試策略
 
-- **[P] markers**: Indicate parallelizable tasks (different files, no dependency on incomplete tasks)
-- **[Story] labels**: Map tasks to user stories for traceability (US0, US1, US2, US3, US4)
-- **File paths**: All tasks include exact file paths for clarity
-- **Checklist format**: `- [ ] [TID] [P?] [Story?] Description with file path` for tracking progress
-- **Test-first approach**: Write tests before implementation per Constitution requirements
-- **Independent user stories**: Each story (except US0 authentication gate) can be validated independently
-- **Incremental delivery**: Deploy after each user story completion for early feedback
-- **Constitution compliance**: 
-  - ✅ **Simplicity**: Pure frontend, no backend complexity
-  - ✅ **User Value First**: P0/P1 deliver core value (login + itinerary view)
-  - ✅ **Pragmatic Performance**: Performance targets in Phase 8 (Lighthouse CI)
-  - ✅ **Good Enough Security**: Friendly privacy mechanism, suitable for family/friends
-  - ✅ **Testing**: Unit + integration + E2E coverage included
-  - ✅ **Clarity & Honesty**: All design decisions documented in research.md
+### 測試驅動開發（TDD）流程
+
+對於每個使用者故事：
+
+1. **優先撰寫測試**（標記預期行為）
+2. **驗證測試失敗**（尚未實作）
+3. **實作最小程式碼**以通過測試
+4. **驗證測試通過**（實作正確）
+5. **如需重構**（保持測試通過）
+
+### 測試覆蓋率目標（依據 Constitution）
+
+- **單元測試**：≥80% 覆蓋率（stores、utilities、components）
+- **整合測試**：覆蓋所有使用者旅程（驗證流程、行程流程、搜尋/過濾流程、旅遊資訊流程、深連結流程）
+- **E2E 測試**：覆蓋所有關鍵場景（登入 6 個場景、行程多日導航、離線模式）
+
+### 測試執行順序
+
+1. **單元測試**（快速回饋，每次檔案儲存時執行）
+2. **整合測試**（中等速度，commit 時執行）
+3. **E2E 測試**（較慢，PR 及部署前執行）
 
 ---
 
-## Total Task Count
+## 註記
 
-- **Phase 1 (Setup)**: 8 tasks
-- **Phase 2 (Foundational)**: 10 tasks (BLOCKING)
-- **Phase 3 (US0 - Login)**: 10 tasks (BLOCKING)
-- **Phase 4 (US1 - Itinerary)**: 13 tasks (MVP Core)
-- **Phase 5 (US2 - Search/Filter)**: 8 tasks
-- **Phase 6 (US4 - Travel Info)**: 11 tasks
-- **Phase 7 (US3 - Deep Links)**: 7 tasks
-- **Phase 8 (Polish)**: 16 tasks
+- **[P] 標記**：表示可平行執行的任務（不同檔案，無未完成任務的依賴）
+- **[Story] 標籤**：將任務對應到使用者故事以便追蹤（US0、US1、US2、US3、US4）
+- **檔案路徑**：所有任務均包含確切的檔案路徑以提高清晰度
+- **清單格式**：`- [ ] [TID] [P?] [Story?] 描述與檔案路徑` 以便追蹤進度
+- **測試優先方法**：根據 Constitution 要求，實作前先撰寫測試
+- **獨立使用者故事**：每個故事（除 US0 驗證閘道外）均可獨立驗證
+- **漸進交付**：每個使用者故事完成後部署，以獲得早期回饋
+- **Constitution 符合性**：
+  - ✅ **簡單性**：純前端，無後端複雜性
+  - ✅ **用戶價值優先**：P0/P1 交付核心價值（登入 + 行程檢視）
+  - ✅ **務實效能**：Phase 8 中的效能目標（Lighthouse CI）
+  - ✅ **足夠好的安全性**：友善的隱私機制，適合家人朋友
+  - ✅ **測試**：包含單元 + 整合 + E2E 覆蓋
+  - ✅ **清晰與誠實**：所有設計決策已記錄於 research.md
 
-**Total**: 83 tasks
+---
 
-**Parallel Opportunities**: 35+ tasks marked [P] (42% of total)
+## 總任務數
 
-**MVP Deliverable**: 31 tasks (Phase 1-4: Setup + Foundational + Login + Itinerary)
+- **Phase 1（專案設置）**：8 個任務
+- **Phase 2（基礎架構）**：10 個任務（阻擋型）
+- **Phase 3（US0 - 登入）**：10 個任務（阻擋型）
+- **Phase 4（US1 - 行程檢視）**：13 個任務（MVP 核心）
+- **Phase 5（US2 - 搜尋/過濾）**：8 個任務
+- **Phase 6（US4 - 旅遊資訊）**：11 個任務
+- **Phase 7（US3 - 深連結）**：7 個任務
+- **Phase 8（整體優化）**：16 個任務
 
-**Estimated Timeline** (single developer): 4-6 weeks  
+**總計**：83 個任務
+
+**平行執行機會**：35+ 個任務標記 [P]（佔總數的 42%）
+
+**MVP 交付物**：31 個任務（Phase 1-4：專案設置 + 基礎架構 + 登入 + 行程檢視）
+
+**估計時間線**（單一開發者）：4-6 週  
 **Estimated Timeline** (2-3 developers, parallel execution): 3-4 weeks
