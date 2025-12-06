@@ -137,11 +137,11 @@
 
 ### 使用者故事 2 實作
 
-- [ ] T042 [P] [US2] 在 src/components/itinerary/SearchBar.vue 中建立 SearchBar 元件（props: modelValue/placeholder/clearable，emits: update:modelValue/search，300ms debounce 使用 lodash 或原生 setTimeout）
-- [ ] T043 [P] [US2] 在 src/utils/searchHelper.ts 中實作 searchHelper 工具函數（3 個函數：searchItineraryItems、matchesSearchQuery、getTagStatistics）
-- [ ] T044 [US2] 在 ItineraryView 中新增 SearchBar（繫定至 ItineraryStore.searchQuery，輸入時呼叫 setSearchQuery）
-- [ ] T045 [US2] 在 ItineraryView 中新增分類過濾按鈕（4 個按鈕：景點/餐廳/交通/住宿，支援多選切換）
-- [ ] T046 [US2] 在 ItineraryStore 中實作 filteredItems getter（結合 searchQuery + 分類過濾器，應用於 currentDayItems）
+- [X] T042 [P] [US2] 在 src/components/itinerary/SearchBar.vue 中建立 SearchBar 元件（props: modelValue/placeholder/clearable，emits: update:modelValue/search，300ms debounce 使用 lodash 或原生 setTimeout）
+- [X] T043 [P] [US2] 在 src/utils/searchHelper.ts 中實作 searchHelper 工具函數（3 個函數：searchItineraryItems、matchesSearchQuery、getTagStatistics）
+- [X] T044 [US2] 在 ItineraryView 中新增 SearchBar（繫結至 ItineraryStore.searchQuery，輸入時呼叫 setSearchQuery）
+- [X] T045 [US2] 在 ItineraryView 中新增分類過濾按鈕（4 個按鈕：景點/餐廳/交通/住宿，支援多選切換）
+- [X] T046 [US2] 在 ItineraryStore 中實作 filteredItems getter（結合 searchQuery + 分類過濾器，應用於 currentDayItems）
 
 ### 使用者故事 2 測試
 

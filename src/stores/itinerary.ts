@@ -17,6 +17,7 @@ export const useItineraryStore = defineStore('itinerary', () => {
   const days = ref<Record<string, ItineraryDay>>({})
   const currentDate = ref<string | null>(null)
   const searchQuery = ref('')
+  const selectedCategories = ref<string[]>([])
   const completedItems = ref<CompletedItems>({})
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -46,6 +47,14 @@ export const useItineraryStore = defineStore('itinerary', () => {
           item.description?.toLowerCase().includes(query) ||
           item.tags?.toLowerCase().includes(query)
       )
+    }
+
+    // 分類過濾
+    if (selectedCategories.value.length > 0) {
+      items = items.filter((item) => {
+        if (!item.category) return false
+        return selectedCategories.value.includes(item.category)
+      })
     }
 
     return items
@@ -172,6 +181,19 @@ export const useItineraryStore = defineStore('itinerary', () => {
     searchQuery.value = query
   }
 
+  function toggleCategory(category: string): void {
+    const index = selectedCategories.value.indexOf(category)
+    if (index > -1) {
+      selectedCategories.value.splice(index, 1)
+    } else {
+      selectedCategories.value.push(category)
+    }
+  }
+
+  function clearCategoryFilter(): void {
+    selectedCategories.value = []
+  }
+
   function toggleComplete(itemId: string, completed: boolean): void {
     completedItems.value[itemId] = completed
 
@@ -227,6 +249,7 @@ export const useItineraryStore = defineStore('itinerary', () => {
     days,
     currentDate,
     searchQuery,
+    selectedCategories,
     completedItems,
     loading,
     error,
@@ -243,6 +266,8 @@ export const useItineraryStore = defineStore('itinerary', () => {
     previousDay,
     nextDay,
     setSearchQuery,
+    toggleCategory,
+    clearCategoryFilter,
     toggleComplete,
     clearCompletionState,
     restoreCompletionState,

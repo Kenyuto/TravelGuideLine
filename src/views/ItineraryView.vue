@@ -131,6 +131,42 @@
       </div>
 
       <div class="mb-4 rounded-lg bg-white p-4 shadow">
+        <SearchBar
+          v-model="itineraryStore.searchQuery"
+          placeholder="搜尋標題、地點、標籤..."
+          @search="handleSearch"
+        />
+      </div>
+
+      <div class="mb-4 rounded-lg bg-white p-4 shadow">
+        <div class="mb-3 flex items-center justify-between">
+          <p class="text-sm font-medium text-gray-700">分類過濾</p>
+          <button
+            v-if="itineraryStore.selectedCategories.length > 0"
+            @click="handleClearCategoryFilter"
+            class="text-xs text-primary-600 hover:text-primary-700 underline"
+          >
+            清除
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            v-for="category in categories"
+            :key="category"
+            @click="handleToggleCategory(category)"
+            :class="[
+              'rounded-full px-3 py-1 text-sm font-medium transition-colors',
+              itineraryStore.selectedCategories.includes(category)
+                ? 'bg-primary-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+            ]"
+          >
+            {{ category }}
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-4 rounded-lg bg-white p-4 shadow">
         <div class="flex items-center justify-between text-sm text-gray-600">
           <span>完成進度：{{ itineraryStore.completionPercentage }}%</span>
           <span>總花費：{{ formatCurrency(itineraryStore.totalCost) }}</span>
@@ -157,7 +193,13 @@
         v-if="itineraryStore.filteredItems.length === 0"
         class="rounded-lg bg-white p-8 text-center shadow"
       >
-        <p class="text-gray-600">此日期無行程項目</p>
+        <p class="text-gray-600">
+          {{
+            itineraryStore.searchQuery || itineraryStore.selectedCategories.length > 0
+              ? '沒有符合條件的行程項目'
+              : '此日期無行程項目'
+          }}
+        </p>
       </div>
     </div>
   </div>
@@ -169,10 +211,13 @@ import { useRouter } from 'vue-router'
 import { useItineraryStore } from '@/stores/itinerary'
 import { useAuthStore } from '@/stores/auth'
 import ItineraryItemCard from '@/components/itinerary/ItineraryItemCard.vue'
+import SearchBar from '@/components/itinerary/SearchBar.vue'
 
 const router = useRouter()
 const itineraryStore = useItineraryStore()
 const authStore = useAuthStore()
+
+const categories = ['景點', '餐廳', '交通', '住宿']
 
 const currentDayIndex = computed(() => {
   return itineraryStore.availableDates.indexOf(itineraryStore.currentDate || '')
@@ -233,6 +278,18 @@ async function handleRetry() {
 function handleLogout() {
   authStore.logout()
   router.push('/')
+}
+
+function handleSearch(query: string) {
+  itineraryStore.setSearchQuery(query)
+}
+
+function handleToggleCategory(category: string) {
+  itineraryStore.toggleCategory(category)
+}
+
+function handleClearCategoryFilter() {
+  itineraryStore.clearCategoryFilter()
 }
 
 function handleKeydown(event: KeyboardEvent) {
