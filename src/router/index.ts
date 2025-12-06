@@ -60,18 +60,47 @@ const router = createRouter({
 
 /**
  * 路由導航守衛
- * 將在 Phase 3（US0 登入驗證）中實作：
- * - 檢查 requiresAuth
- * - 驗證 AuthStore.isLoginValid
- * - 未驗證時重導向至 / 並帶 redirect 參數
- * - 登入後還原 redirect 參數
+ * T022-T023: 實作驗證守衛與深連結還原
  */
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, from, next) => {
   // 更新頁面標題
   document.title = `${to.meta.title || '旅遊行程'} - 旅遊行程檢視`
 
-  // TODO: Phase 3 將加入驗證守衛
-  next()
+  // 動態 import AuthStore 以避免循環依賴
+  import('@/stores/auth').then(({ useAuthStore }) => {
+    const authStore = useAuthStore()
+
+    // 恢復登入狀態（僅在首次導航時）
+    if (!authStore.isAuthenticated && !authStore.authTimestamp) {
+      authStore.restoreAuthState()
+    }
+
+    // T022: 驗證路由守衛
+    if (to.meta.requiresAuth && !authStore.isLoginValid) {
+      // 未登入或登入已過期，重導向至登入頁面並帶 redirect 參數
+      next({
+        path: '/',
+        query: { redirect: to.fullPath },
+      })
+      return
+    }
+
+    // T023: 深連結還原守衛
+    if (to.path === '/' && authStore.isLoginValid && to.query.redirect) {
+      // 已登入且有 redirect 參數，導向原本要訪問的頁面
+      const redirectPath = to.query.redirect as string
+      next(redirectPath)
+      return
+    }
+
+    // 已登入使用者訪問登入頁面，直接導向行程頁面
+    if (to.path === '/' && authStore.isLoginValid && !to.query.redirect) {
+      next('/itinerary')
+      return
+    }
+
+    next()
+  })
 })
 
 export default router
