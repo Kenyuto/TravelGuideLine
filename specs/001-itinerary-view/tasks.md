@@ -76,12 +76,12 @@
 
 ### 使用者故事 0 實作
 
-- [ ] T019 [P] [US0] 在 src/stores/auth.ts 中建立 AuthStore（3 個 state：isAuthenticated/authTimestamp/passwordList，3 個 getters：isLoginValid/validPasswords/remainingTime，5 個 actions：loadAuthConfig/validatePassword/login/logout/restoreAuthState）
-- [ ] T020 [P] [US0] 在 src/views/LoginView.vue 中建立 LoginView 頁面（頁面版配包含標題、說明槽位、密碼輸入框、錯誤顯示）
-- [ ] T021 [P] [US0] 在 src/components/auth/LoginForm.vue 中建立 LoginForm 元件（props: loading/error，emits: submit，slots: title/description）
-- [ ] T022 [US0] 在 src/router/index.ts 中實作驗證路由守衛（檢查 isLoginValid，若未驗證則重導向至 / 並帶查詢參數）
-- [ ] T023 [US0] 在 src/router/index.ts 中實作深連結還原守衛（登入後還原 redirect 參數）
-- [ ] T024 [US0] 在 LoginView 中增加登入/登出功能（呼叫 AuthStore actions、處理錯誤、成功時導航至 /itinerary）
+- [X] T019 [P] [US0] 在 src/stores/auth.ts 中建立 AuthStore（3 個 state：isAuthenticated/authTimestamp/passwordList，3 個 getters：isLoginValid/validPasswords/remainingTime，5 個 actions：loadAuthConfig/validatePassword/login/logout/restoreAuthState）
+- [X] T020 [P] [US0] 在 src/views/LoginView.vue 中建立 LoginView 頁面（頁面版配包含標題、說明槽位、密碼輸入框、錯誤顯示）
+- [X] T021 [P] [US0] 在 src/components/auth/LoginForm.vue 中建立 LoginForm 元件（props: loading/error，emits: submit，slots: title/description）
+- [X] T022 [US0] 在 src/router/index.ts 中實作驗證路由守衛（檢查 isLoginValid，若未驗證則重導向至 / 並帶查詢參數）
+- [X] T023 [US0] 在 src/router/index.ts 中實作深連結還原守衛（登入後還原 redirect 參數）
+- [X] T024 [US0] 在 LoginView 中增加登入/登出功能（呼叫 AuthStore actions、處理錯誤、成功時導航至 /itinerary）
 
 ### 使用者故事 0 測試
 
@@ -105,14 +105,14 @@
 
 ### 使用者故事 1 實作
 
-- [ ] T029 [P] [US1] 在 src/stores/itinerary.ts 中建立 ItineraryStore（6 個 state: days/currentDate/searchQuery/completedItems/loading/error，6 個 getters: currentDayItems/availableDates/filteredItems/tagStatistics/totalCost/completionPercentage，8 個 actions: loadItinerary/switchDate/previousDay/nextDay/setSearchQuery/toggleComplete/clearCompletionState/restoreCompletionState）
-- [ ] T030 [P] [US1] 在 src/views/ItineraryView.vue 中建立 ItineraryView 頁面（頁面版配包含日期導航、日行程卡片列表、loading/error 狀態）
-- [ ] T031 [P] [US1] 在 src/components/itinerary/ItineraryDayCard.vue 中建立 ItineraryDayCard 元件（props: day/isActive，emits: click，顯示日期標題及總費用與完成統計）
-- [ ] T032 [P] [US1] 在 src/components/itinerary/ItineraryItemCard.vue 中建立 ItineraryItemCard 元件（props: item，emits: toggle-complete/open-map，slots: actions，顯示 12 個欄位及 Emoji、分類特定欄位）
-- [ ] T033 [US1] 在 ItineraryView 中實作日期導航邏輯（previousDay/nextDay 按鈕、鍵盤箭頭、觸控滑動，使用 hammerjs 或原生 touch events）
-- [ ] T034 [US1] 在 ItineraryItemCard 中整合 Google Maps 連結（行動版在新分頁開啟，原生開啟 Google Maps app）
-- [ ] T035 [US1] 在 ItineraryItemCard 中新增完成狀態切換（勾選框及視覺回饋：勾選圖示 + 灰階）
-- [ ] T036 [US1] 在 ItineraryStore 初始化時還原完成狀態（從 LocalStorage 呼叫 restoreCompletionState）
+- [X] T029 [P] [US1] 在 src/stores/itinerary.ts 中建立 ItineraryStore（6 個 state: days/currentDate/searchQuery/completedItems/loading/error，6 個 getters: currentDayItems/availableDates/filteredItems/tagStatistics/totalCost/completionPercentage，8 個 actions: loadItinerary/switchDate/previousDay/nextDay/setSearchQuery/toggleComplete/clearCompletionState/restoreCompletionState）
+- [X] T030 [P] [US1] 在 src/views/ItineraryView.vue 中建立 ItineraryView 頁面（頁面版配包含日期導航、日行程卡片列表、loading/error 狀態）
+- [X] T031 [P] [US1] 在 src/components/itinerary/ItineraryDayCard.vue 中建立 ItineraryDayCard 元件（props: day/isActive，emits: click，顯示日期標題及總費用與完成統計）
+- [X] T032 [P] [US1] 在 src/components/itinerary/ItineraryItemCard.vue 中建立 ItineraryItemCard 元件（props: item，emits: toggle-complete/open-map，slots: actions，顯示 12 個欄位及 Emoji、分類特定欄位）
+- [X] T033 [US1] 在 ItineraryView 中實作日期導航邏輯（previousDay/nextDay 按鈕、鍵盤箭頭、觸控滑動，使用 hammerjs 或原生 touch events）
+- [X] T034 [US1] 在 ItineraryItemCard 中整合 Google Maps 連結（行動版在新分頁開啟，原生開啟 Google Maps app）
+- [X] T035 [US1] 在 ItineraryItemCard 中新增完成狀態切換（勾選框及視覺回饋：勾選圖示 + 灰階）
+- [X] T036 [US1] 在 ItineraryStore 初始化時還原完成狀態（從 LocalStorage 呼叫 restoreCompletionState）
 
 ### 使用者故事 1 測試
 
