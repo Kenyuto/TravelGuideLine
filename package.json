@@ -1,0 +1,58 @@
+{
+  "name": "travel-guideline",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "旅遊行程檢視網站 - 從 Google Sheet 讀取行程資料的純前端 PWA 應用",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@vue/test-utils": "^2.4.3",
+    "vite": "^5.0.0",
+    "vite-plugin-pwa": "^0.17.4",
+    "workbox-window": "^7.0.0",
+    "typescript": "^5.3.3",
+    "vue-tsc": "^1.8.27",
+    "@types/node": "^20.10.6",
+    "@types/papaparse": "^5.3.14",
+    "vitest": "^1.1.0",
+    "@vitest/ui": "^1.1.0",
+    "jsdom": "^23.0.1",
+    "@playwright/test": "^1.40.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.19.2",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.16",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}

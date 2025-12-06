@@ -30,14 +30,14 @@
 
 **目的**：專案初始化與基本結構
 
-- [ ] T001 建立專案目錄結構（src/、tests/、public/、docs/）
-- [ ] T002 初始化 Vue 3 + Vite 5.x + TypeScript 5.x 專案，依據 package.json 安裝相依套件
-- [ ] T003 [P] 設定 ESLint + Prettier 支援 Vue 3 + TypeScript 嚴格模式
-- [ ] T004 [P] 在 vitest.config.ts 中設定 Vitest 1.x 進行單元/整合測試
-- [ ] T005 [P] 在 playwright.config.ts 中設定 Playwright 1.40+ 進行 E2E 測試
-- [ ] T006 [P] 在 tailwind.config.js 中設定 Tailwind CSS 3.x 及 mobile-first 配置
-- [ ] T007 [P] 建立 .env.example 檔案，包含 VITE_GOOGLE_SHEET_ID 佔位符
-- [ ] T008 [P] 設定 Git pre-commit hooks（lint-staged + Husky）以確保程式碼品質
+- [X] T001 建立專案目錄結構（src/、tests/、public/、docs/）
+- [X] T002 初始化 Vue 3 + Vite 5.x + TypeScript 5.x 專案，依據 package.json 安裝相依套件
+- [X] T003 [P] 設定 ESLint + Prettier 支援 Vue 3 + TypeScript 嚴格模式
+- [X] T004 [P] 在 vitest.config.ts 中設定 Vitest 1.x 進行單元/整合測試
+- [X] T005 [P] 在 playwright.config.ts 中設定 Playwright 1.40+ 進行 E2E 測試
+- [X] T006 [P] 在 tailwind.config.js 中設定 Tailwind CSS 3.x 及 mobile-first 配置
+- [X] T007 [P] 建立 .env.example 檔案，包含 VITE_GOOGLE_SHEET_ID 佔位符
+- [X] T008 [P] 設定 Git pre-commit hooks（lint-staged + Husky）以確保程式碼品質
 
 ---
 
