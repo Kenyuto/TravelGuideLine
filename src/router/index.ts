@@ -28,16 +28,15 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true,
     },
   },
-  // TODO: Implement TravelInfoView (Phase 6)
-  // {
-  //   path: '/travel-info',
-  //   name: 'TravelInfo',
-  //   component: () => import('@/views/TravelInfoView.vue'),
-  //   meta: {
-  //     title: '旅遊資訊',
-  //     requiresAuth: true,
-  //   },
-  // },
+  {
+    path: '/travel-info',
+    name: 'TravelInfo',
+    component: () => import('@/views/TravelInfoView.vue'),
+    meta: {
+      title: '旅遊資訊',
+      requiresAuth: true,
+    },
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',

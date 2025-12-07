@@ -164,14 +164,14 @@
 
 ### 使用者故事 4 實作
 
-- [ ] T050 [P] [US4] 在 src/stores/travelInfo.ts 中建立 TravelInfoStore（5 個 state: items/selectedCategory/packedItems/loading/error，5 個 getters: categories/filteredItems/itemsByCategory/packingList/packingProgress，5 個 actions: loadTravelInfo/filterByCategory/togglePacked/clearPackingState/restorePackingState）
-- [ ] T051 [P] [US4] 在 src/views/TravelInfoView.vue 中建立 TravelInfoView 頁面（頁面版配包含分類過濾器、資訊卡片列表、打包進度條）
-- [ ] T052 [P] [US4] 在 src/components/travelInfo/TravelInfoCard.vue 中建立 TravelInfoCard 元件（props: item/showPackingCheckbox，emits: toggle-packed，顯示分類特定欄位）
-- [ ] T053 [US4] 在 src/router/index.ts 中新增「旅遊資訊」路由（path: /travel-info，component: TravelInfoView）
-- [ ] T054 [US4] 在 App.vue 或主版面配置中新增標籤導航（2 個標籤：行程/旅遊資訊，高亮顯示活躍標籤）
-- [ ] T055 [US4] 在 TravelInfoView 中實作分類過濾器（按鈕：攜帶物品/注意事項/緊急聯絡/預算/其他，呼叫 filterByCategory）
-- [ ] T056 [US4] 在 TravelInfoCard 中新增打包勾選框（僅分類為「打包清單」時顯示，切換視覺狀態 + 呼叫 togglePacked）
-- [ ] T057 [US4] 在 TravelInfoStore 初始化時還原打包狀態（從 LocalStorage 呼叫 restorePackingState）
+- [X] T050 [P] [US4] 在 src/stores/travelInfo.ts 中建立 TravelInfoStore（5 個 state: items/selectedCategory/packedItems/loading/error，5 個 getters: categories/filteredItems/itemsByCategory/packingList/packingProgress，5 個 actions: loadTravelInfo/filterByCategory/togglePacked/clearPackingState/restorePackingState）
+- [X] T051 [P] [US4] 在 src/views/TravelInfoView.vue 中建立 TravelInfoView 頁面（頁面版配包含分類過濾器、資訊卡片列表、打包進度條）
+- [X] T052 [P] [US4] 在 src/components/travelInfo/TravelInfoCard.vue 中建立 TravelInfoCard 元件（props: item/showPackingCheckbox，emits: toggle-packed，顯示分類特定欄位）
+- [X] T053 [US4] 在 src/router/index.ts 中新增「旅遊資訊」路由（path: /travel-info，component: TravelInfoView）
+- [X] T054 [US4] 在 App.vue 或主版面配置中新增標籤導航（2 個標籤：行程/旅遊資訊，高亮顯示活躍標籤）
+- [X] T055 [US4] 在 TravelInfoView 中實作分類過濾器（按鈕：攜帶物品/注意事項/緊急聯絡/預算/其他，呼叫 filterByCategory）
+- [X] T056 [US4] 在 TravelInfoCard 中新增打包勾選框（僅分類為「打包清單」時顯示，切換視覺狀態 + 呼叫 togglePacked）
+- [X] T057 [US4] 在 TravelInfoStore 初始化時還原打包狀態（從 LocalStorage 呼叫 restorePackingState）
 
 ### 使用者故事 4 測試
 

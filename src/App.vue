@@ -69,6 +69,36 @@
       ⚠️ 目前處於離線模式，資料可能未同步
     </div>
 
+    <!-- Tab Navigation (Show only when authenticated) -->
+    <nav v-if="showTabNav" class="bg-white dark:bg-gray-800 shadow sticky top-0 z-30">
+      <div class="container mx-auto px-4">
+        <div class="flex space-x-1">
+          <router-link
+            to="/itinerary"
+            :class="[
+              'px-6 py-3 text-sm font-medium transition-colors border-b-2',
+              $route.path === '/itinerary'
+                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200',
+            ]"
+          >
+            📅 行程
+          </router-link>
+          <router-link
+            to="/travel-info"
+            :class="[
+              'px-6 py-3 text-sm font-medium transition-colors border-b-2',
+              $route.path === '/travel-info'
+                ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200',
+            ]"
+          >
+            ℹ️ 旅遊資訊
+          </router-link>
+        </div>
+      </div>
+    </nav>
+
     <RouterView v-slot="{ Component }">
       <Transition name="fade" mode="out-in">
         <component :is="Component" />
@@ -78,13 +108,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { RouterView } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
+
+const route = useRoute()
+const authStore = useAuthStore()
 
 // 全域狀態（Phase 8 將移至 UIStore）
 const loading = ref(false)
 const error = ref<string | null>(null)
 const isOffline = ref(false)
+
+// Show tab navigation only when authenticated and not on login page
+const showTabNav = computed(() => {
+  return authStore.isAuthenticated && route.path !== '/'
+})
 
 /**
  * 清除錯誤訊息
