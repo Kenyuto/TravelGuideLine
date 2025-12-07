@@ -54,7 +54,7 @@ export const useTravelInfoStore = defineStore('travelInfo', () => {
   })
 
   // Actions
-  async function loadTravelInfo(sheetId: string, gid: number = 1080496626): Promise<void> {
+  async function loadTravelInfo(sheetId: string, gid: number = 2053866883): Promise<void> {
     loading.value = true
     error.value = null
 
