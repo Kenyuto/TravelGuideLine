@@ -194,10 +194,10 @@
 
 ### 使用者故事 3 實作
 
-- [ ] T061 [P] [US3] 在 src/utils/deepLinkHelper.ts 中實作 deepLinkHelper 工具函數（3 個函數：getQueryParam、setQueryParams、generateDeepLink）
-- [ ] T062 [US3] 在 ItineraryView 中新增深連結處理（onMounted：檢查 URL 參數 → 若存在 date 參數則呼叫 switchDate → 若存在 item 參數則捲動至項目）
-- [ ] T063 [US3] 在驗證守衛中保留登入流程的深連結參數（儲存帶查詢參數的重導向 URL → 登入成功後還原）
-- [ ] T064 [US3] 在 ItineraryItemCard 中新增分享按鈕（複製深連結 URL 至剪貼簿，顯示提示訊息「連結已複製」）
+- [X] T061 [P] [US3] 在 src/utils/deepLinkHelper.ts 中實作 deepLinkHelper 工具函數（3 個函數：getQueryParam、setQueryParams、generateDeepLink）
+- [X] T062 [US3] 在 ItineraryView 中新增深連結處理（onMounted：檢查 URL 參數 → 若存在 date 參數則呼叫 switchDate → 若存在 item 參數則捲動至項目）
+- [X] T063 [US3] 在驗證守衛中保留登入流程的深連結參數（儲存帶查詢參數的重導向 URL → 登入成功後還原）
+- [X] T064 [US3] 在 ItineraryItemCard 中新增分享按鈕（複製深連結 URL 至剪貼簿，顯示提示訊息「連結已複製」）
 
 ### 使用者故事 3 測試
 
