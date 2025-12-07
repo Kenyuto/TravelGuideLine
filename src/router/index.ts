@@ -28,15 +28,16 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true,
     },
   },
-  {
-    path: '/travel-info',
-    name: 'TravelInfo',
-    component: () => import('@/views/TravelInfoView.vue'),
-    meta: {
-      title: '旅遊資訊',
-      requiresAuth: true,
-    },
-  },
+  // TODO: Implement TravelInfoView (Phase 6)
+  // {
+  //   path: '/travel-info',
+  //   name: 'TravelInfo',
+  //   component: () => import('@/views/TravelInfoView.vue'),
+  //   meta: {
+  //     title: '旅遊資訊',
+  //     requiresAuth: true,
+  //   },
+  // },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -62,7 +63,7 @@ const router = createRouter({
  * 路由導航守衛
  * T022-T023: 實作驗證守衛與深連結還原
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   // 更新頁面標題
   document.title = `${to.meta.title || '旅遊行程'} - 旅遊行程檢視`
 

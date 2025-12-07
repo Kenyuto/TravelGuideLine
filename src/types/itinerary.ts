@@ -110,6 +110,12 @@ export interface ItineraryItem {
    * 邏輯：tags?.split(',').map(t => t.trim()).filter(Boolean) || []
    */
   tagList: string[]
+
+  /**
+   * 計算屬性：連結陣列
+   * 邏輯：links?.split(',').map(l => l.trim()).filter(Boolean) || []
+   */
+  linkList: string[]
 }
 
 /**

@@ -129,6 +129,9 @@ function parseItineraryCSV(rows: Record<string, string>[]): ItineraryItem[] {
       return
     }
 
+    const links = row['連結']?.trim() || undefined
+    const tags = row['標籤']?.trim() || undefined
+
     const item: ItineraryItem = {
       id: uuidv4(),
       date,
@@ -140,17 +143,24 @@ function parseItineraryCSV(rows: Record<string, string>[]): ItineraryItem[] {
       cost: row['花費'] ? parseFloat(row['花費']) : undefined,
       currency: row['幣別']?.trim() || undefined,
       description: row['說明']?.trim() || undefined,
-      links: row['連結']?.trim() || undefined,
-      tags: row['標籤']?.trim() || undefined,
+      links,
+      tags,
       notes: row['備註']?.trim() || undefined,
       isCompleted: false,
       isToday: false,
       tagList: [],
+      linkList: [],
     }
 
     // 計算屬性
     item.isToday = computeIsToday(item)
     item.tagList = computeTagList(item)
+    item.linkList = links
+      ? links
+          .split(',')
+          .map((link) => link.trim())
+          .filter((link) => link.length > 0)
+      : []
 
     items.push(item)
   })
