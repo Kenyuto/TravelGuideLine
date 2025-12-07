@@ -62,7 +62,7 @@ async function handleSubmit(password: string) {
       if (!sheetId) {
         throw new Error('未設定 Google Sheet ID，請檢查 .env 設定')
       }
-      await authStore.loadAuthConfig(sheetId, 2)
+      await authStore.loadAuthConfig(sheetId, 69363529)
     }
 
     // 執行登入

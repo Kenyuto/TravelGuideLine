@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
   })
 
   // Actions
-  async function loadAuthConfig(sheetId: string, gid: number = 2): Promise<void> {
+  async function loadAuthConfig(sheetId: string, gid: number = 69363529): Promise<void> {
     loading.value = true
     error.value = null
 
