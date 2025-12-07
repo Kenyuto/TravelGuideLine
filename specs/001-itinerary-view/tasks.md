@@ -201,9 +201,9 @@
 
 ### 使用者故事 3 測試
 
-- [ ] T065 [P] [US3] 在 tests/unit/utils/deepLinkHelper.spec.ts 中為 deepLinkHelper 撰寫單元測試（測試 getQueryParam、setQueryParams 不重整頁面、generateDeepLink URL 格式）
-- [ ] T066 [US3] 在 tests/integration/deep-link-flow.spec.ts 中為深連結流程撰寫整合測試（測試帶 date 參數的 URL → 自動切換日期，帶 item 參數的 URL → 尋找日期 + 捲動至項目）
-- [ ] T067 [US3] 在 tests/e2e/deep-link.spec.ts 中為深連結場景撰寫 E2E 測試（測試帶深連結參數的直接存取、未驗證狀態下的深連結 → 登入 → 導航）
+- [X] T065 [P] [US3] 在 tests/unit/utils/deepLinkHelper.spec.ts 中為 deepLinkHelper 撰寫單元測試（測試 getQueryParam、setQueryParams 不重整頁面、generateDeepLink URL 格式）
+- [X] T066 [US3] 在 tests/integration/deep-link-flow.spec.ts 中為深連結流程撰寫整合測試（測試帶 date 參數的 URL → 自動切換日期，帶 item 參數的 URL → 尋找日期 + 捲動至項目）
+- [X] T067 [US3] 在 tests/e2e/deep-link.spec.ts 中為深連結場景撰寫 E2E 測試（測試帶深連結參數的直接存取、未驗證狀態下的深連結 → 登入 → 導航）
 
 **檢查點**：使用者故事 3 完成 - 深連結功能正常、URL 參數運作、分享按鈕已啟用
 
