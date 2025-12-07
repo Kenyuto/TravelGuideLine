@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: 001-itinerary-view
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
