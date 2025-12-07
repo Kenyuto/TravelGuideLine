@@ -183,11 +183,30 @@
         <ItineraryItemCard
           v-for="item in itineraryStore.filteredItems"
           :key="item.id"
+          :id="`item-${item.id}`"
           :item="item"
           @toggle-complete="handleToggleComplete"
           @open-map="handleOpenMap"
+          @show-toast="showToast"
         />
       </div>
+
+      <!-- Toast 通知 -->
+      <Transition
+        enter-active-class="transition ease-out duration-300"
+        enter-from-class="opacity-0 translate-y-4"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition ease-in duration-200"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 translate-y-4"
+      >
+        <div
+          v-if="toastVisible"
+          class="fixed bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-gray-800 px-4 py-2 text-white shadow-lg"
+        >
+          {{ toastMessage }}
+        </div>
+      </Transition>
 
       <div
         v-if="itineraryStore.filteredItems.length === 0"
@@ -206,16 +225,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, nextTick, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useItineraryStore } from '@/stores/itinerary'
 import { useAuthStore } from '@/stores/auth'
+import type { ItineraryItem } from '@/types/itinerary'
 import ItineraryItemCard from '@/components/itinerary/ItineraryItemCard.vue'
 import SearchBar from '@/components/itinerary/SearchBar.vue'
+import { getQueryParam, generateSlug } from '@/utils/deepLinkHelper'
 
 const router = useRouter()
 const itineraryStore = useItineraryStore()
 const authStore = useAuthStore()
+
+// Toast 狀態
+const toastVisible = ref(false)
+const toastMessage = ref('')
+let toastTimer: number | null = null
 
 const categories = ['景點', '餐廳', '交通', '住宿']
 
@@ -340,6 +366,9 @@ onMounted(async () => {
 
   try {
     await itineraryStore.loadItinerary(sheetId, 0)
+
+    // 處理深連結：檢查 URL 參數
+    await handleDeepLink()
   } catch (error) {
     console.error('載入行程失敗：', error)
   }
@@ -348,7 +377,67 @@ onMounted(async () => {
   window.addEventListener('keydown', handleKeydown)
 })
 
+/**
+ * 處理深連結邏輯
+ * 檢查 URL 參數 ?date 和 ?item，自動切換日期和捲動到指定項目
+ */
+async function handleDeepLink() {
+  const dateParam = getQueryParam('date')
+  const itemParam = getQueryParam('item')
+
+  // 如果有日期參數，切換到指定日期
+  if (dateParam && itineraryStore.availableDates.includes(dateParam)) {
+    itineraryStore.switchDate(dateParam)
+  }
+
+  // 如果有項目參數，找到該項目並捲動到該位置
+  if (itemParam) {
+    await nextTick()
+
+    // 在所有日期中尋找匹配的項目
+    for (const [date, items] of Object.entries(itineraryStore.days)) {
+      const matchedItem = items.items.find(
+        (item: ItineraryItem) => generateSlug(item.title) === itemParam
+      )
+
+      if (matchedItem) {
+        // 切換到該項目的日期
+        itineraryStore.switchDate(date)
+        await nextTick()
+
+        // 捲動到該項目（使用項目的 id 作為 DOM 元素的 id）
+        const element = document.getElementById(`item-${matchedItem.id}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          // 加上短暫的高亮效果
+          element.classList.add('ring-2', 'ring-primary-500', 'ring-offset-2')
+          setTimeout(() => {
+            element.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2')
+          }, 2000)
+        }
+        break
+      }
+    }
+  }
+}
+
+function showToast(message: string) {
+  toastMessage.value = message
+  toastVisible.value = true
+
+  if (toastTimer !== null) {
+    clearTimeout(toastTimer)
+  }
+
+  toastTimer = window.setTimeout(() => {
+    toastVisible.value = false
+  }, 3000)
+}
+
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown)
+  if (toastTimer !== null) {
+    clearTimeout(toastTimer)
+  }
 })
 </script>

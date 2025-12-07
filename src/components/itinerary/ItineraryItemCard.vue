@@ -132,6 +132,28 @@
           💡 {{ item.notes }}
         </p>
       </div>
+      <div class="ml-4 flex flex-col gap-2">
+        <button
+          @click="handleShare"
+          class="rounded-lg bg-primary-100 p-2 text-primary-700 transition hover:bg-primary-200"
+          title="分享此行程項目"
+        >
+          <svg
+            class="h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <slot name="actions" :item="item" />
@@ -139,6 +161,7 @@
 </template>
 
 <script setup lang="ts">
+import { generateDeepLink } from '@/utils/deepLinkHelper'
 import type { ItineraryItem } from '@/types/itinerary'
 
 interface Props {
@@ -150,6 +173,7 @@ const props = defineProps<Props>()
 interface Emits {
   (event: 'toggle-complete', itemId: string, completed: boolean): void
   (event: 'open-map', mapLink: string): void
+  (event: 'show-toast', message: string): void
 }
 
 const emit = defineEmits<Emits>()
@@ -162,6 +186,40 @@ function handleToggleComplete(event: Event) {
 function handleOpenMap() {
   if (props.item.mapLink) {
     emit('open-map', props.item.mapLink)
+  }
+}
+
+async function handleShare() {
+  try {
+    const deepLink = generateDeepLink({
+      date: props.item.date,
+      itemId: props.item.id,
+      itemTitle: props.item.title,
+    })
+
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(deepLink)
+      emit('show-toast', '連結已複製')
+    } else {
+      // Fallback for non-HTTPS or older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = deepLink
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        document.execCommand('copy')
+        emit('show-toast', '連結已複製')
+      } catch (err) {
+        console.error('複製失敗:', err)
+        emit('show-toast', '複製失敗，請手動複製連結')
+      }
+      document.body.removeChild(textArea)
+    }
+  } catch (error) {
+    console.error('分享失敗:', error)
+    emit('show-toast', '分享失敗，請稍後再試')
   }
 }
 </script>
