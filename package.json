@@ -54,5 +54,12 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "deploy:preview": "npm run build && npm run preview"
   }
+  
 }
