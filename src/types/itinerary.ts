@@ -94,6 +94,18 @@ export interface ItineraryItem {
   notes?: string
 
   /**
+   * 卡片顏色（選填，CSS 顏色值）
+   * 範例："#FFE5E5"、"rgb(255, 229, 229)"、"pink"
+   */
+  cardColor?: string
+
+  /**
+   * 卡片背景圖片（選填，圖片 URL）
+   * 範例："https://example.com/image.jpg"
+   */
+  cardBackgroundImage?: string
+
+  /**
    * 是否已完成（LocalStorage 狀態）
    * 預設 false
    */

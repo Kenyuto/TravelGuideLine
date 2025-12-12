@@ -146,6 +146,8 @@ function parseItineraryCSV(rows: Record<string, string>[]): ItineraryItem[] {
       links,
       tags,
       notes: row['備註']?.trim() || undefined,
+      cardColor: row['卡片顏色']?.trim() || undefined,
+      cardBackgroundImage: row['卡片背景圖片']?.trim() || undefined,
       isCompleted: false,
       isToday: false,
       tagList: [],
@@ -225,10 +227,18 @@ function parseAuthConfigCSV(rows: Record<string, string>[]): AuthConfig {
       return
     }
 
+    const isSeniorModeValue = row['年長者模式']?.trim().toLowerCase()
+    const isSeniorMode =
+      isSeniorModeValue === 'true' ||
+      isSeniorModeValue === '1' ||
+      isSeniorModeValue === 'yes' ||
+      isSeniorModeValue === '是'
+
     const item: AuthItem = {
       password,
       description: row['說明文字']?.trim() || undefined,
       expiryDate: row['有效期限']?.trim() || undefined,
+      isSeniorMode: isSeniorMode || undefined,
       isValid: false,
     }
 

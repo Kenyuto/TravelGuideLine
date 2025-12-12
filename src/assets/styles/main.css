@@ -7,3 +7,202 @@
     @apply bg-gray-50 text-gray-900;
   }
 }
+
+/* 年長者友善模式樣式 */
+.senior-mode {
+  /* 基礎字體放大 */
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.senior-mode * {
+  /* 確保所有元素繼承行高設定 */
+  line-height: inherit;
+}
+
+.senior-mode h1 {
+  font-size: 2rem; /* 32px */
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.senior-mode h2 {
+  font-size: 1.75rem; /* 28px */
+  line-height: 1.5;
+  margin-bottom: 0.875rem;
+}
+
+.senior-mode h3 {
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.senior-mode p,
+.senior-mode li,
+.senior-mode div,
+.senior-mode span {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.6;
+}
+
+.senior-mode button,
+.senior-mode a,
+.senior-mode input,
+.senior-mode select {
+  /* 所有可點擊元素最小尺寸 44x44px */
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem 1rem;
+  font-size: 1.125rem; /* 18px */
+}
+
+.senior-mode input[type="text"],
+.senior-mode input[type="password"],
+.senior-mode input[type="email"],
+.senior-mode textarea {
+  font-size: 1.125rem; /* 18px */
+  padding: 0.875rem 1rem;
+  line-height: 1.6;
+}
+
+.senior-mode label {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* 增加間距 */
+.senior-mode .space-y-1 > * + * {
+  margin-top: 0.5rem;
+}
+
+.senior-mode .space-y-2 > * + * {
+  margin-top: 0.75rem;
+}
+
+.senior-mode .space-y-3 > * + * {
+  margin-top: 1rem;
+}
+
+.senior-mode .space-y-4 > * + * {
+  margin-top: 1.25rem;
+}
+
+.senior-mode .space-y-6 > * + * {
+  margin-top: 1.75rem;
+}
+
+/* 卡片間距增加 */
+.senior-mode .rounded-lg {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* 按鈕樣式優化 */
+.senior-mode button {
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.senior-mode button:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.senior-mode button:active {
+  transform: scale(0.98);
+}
+
+/* 對比度增強 */
+.senior-mode .text-gray-600 {
+  color: rgb(55, 65, 81); /* gray-700 */
+}
+
+.senior-mode .text-gray-700 {
+  color: rgb(31, 41, 55); /* gray-800 */
+}
+
+.senior-mode .border-gray-200 {
+  border-color: rgb(209, 213, 219); /* gray-300 */
+  border-width: 2px;
+}
+
+/* 表單元素對比度 */
+.senior-mode input,
+.senior-mode select,
+.senior-mode textarea {
+  border-width: 2px;
+  border-color: rgb(156, 163, 175); /* gray-400 */
+}
+
+.senior-mode input:focus,
+.senior-mode select:focus,
+.senior-mode textarea:focus {
+  border-width: 3px;
+  outline-width: 3px;
+}
+
+/* 連結樣式優化 */
+.senior-mode a {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+/* 圖示放大 */
+.senior-mode svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Checkbox 和 Radio 放大 */
+.senior-mode input[type="checkbox"],
+.senior-mode input[type="radio"] {
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+}
+
+/* 減少動畫效果 */
+.senior-mode * {
+  animation-duration: 0.1s !important;
+  transition-duration: 0.15s !important;
+}
+
+/* 確保足夠的留白 */
+.senior-mode .container,
+.senior-mode main {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* 標籤和徽章放大 */
+.senior-mode .rounded-full {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+/* 提示訊息樣式優化 */
+.senior-mode .bg-red-50,
+.senior-mode .bg-yellow-50,
+.senior-mode .bg-green-50 {
+  padding: 1.25rem;
+  border-width: 2px;
+  border-radius: 0.5rem;
+}
+
+/* 導航元素優化 */
+.senior-mode nav {
+  padding: 1rem;
+}
+
+.senior-mode nav a,
+.senior-mode nav button {
+  padding: 0.875rem 1.25rem;
+  margin: 0.25rem;
+}

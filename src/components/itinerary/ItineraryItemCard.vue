@@ -1,9 +1,11 @@
 <template>
   <div
     :class="[
-      'rounded-lg border bg-white p-4 shadow transition-all',
+      'rounded-lg border p-4 shadow transition-all',
       item.isCompleted ? 'border-green-300 bg-green-50' : 'border-gray-200',
+      !item.cardColor && !item.cardBackgroundImage ? 'bg-white' : '',
     ]"
+    :style="cardStyle"
     :data-item-id="item.id"
     :data-map-link="item.mapLink"
   >
@@ -161,6 +163,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { generateDeepLink } from '@/utils/deepLinkHelper'
 import type { ItineraryItem } from '@/types/itinerary'
 
@@ -169,6 +172,22 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+// 計算卡片樣式
+const cardStyle = computed(() => {
+  const style: Record<string, string> = {}
+
+  if (props.item.cardBackgroundImage) {
+    style.backgroundImage = `url('${props.item.cardBackgroundImage}')`
+    style.backgroundSize = 'cover'
+    style.backgroundPosition = 'center'
+    style.backgroundRepeat = 'no-repeat'
+  } else if (props.item.cardColor) {
+    style.backgroundColor = props.item.cardColor
+  }
+
+  return style
+})
 
 interface Emits {
   (event: 'toggle-complete', itemId: string, completed: boolean): void

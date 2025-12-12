@@ -38,6 +38,12 @@ export interface AuthItem {
   expiryDate?: string
 
   /**
+   * 是否啟用年長者友善模式（選填）
+   * 啟用後會放大字體、增加間距、優化視覺設計
+   */
+  isSeniorMode?: boolean
+
+  /**
    * 是否有效（計算屬性）
    * 邏輯：!expiryDate || new Date(expiryDate) >= new Date()
    */

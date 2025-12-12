@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
   const passwordList = ref<AuthItem[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const isSeniorMode = ref(false)
 
   // Getters
   const isLoginValid = computed(() => {
@@ -92,6 +93,20 @@ export const useAuthStore = defineStore('auth', () => {
         throw new InvalidPasswordError('密碼錯誤，請重新輸入')
       }
 
+      // 檢查是否需要啟用年長者模式
+      const trimmedPassword = password.trim()
+      const matchedAuth = validPasswords.value.find((item) => item.password === trimmedPassword)
+      if (matchedAuth?.isSeniorMode) {
+        isSeniorMode.value = true
+        // 套用年長者模式樣式
+        document.documentElement.classList.add('senior-mode')
+        localStorage.setItem('seniorMode', 'true')
+      } else {
+        isSeniorMode.value = false
+        document.documentElement.classList.remove('senior-mode')
+        localStorage.removeItem('seniorMode')
+      }
+
       // 設定登入狀態
       isAuthenticated.value = true
       authTimestamp.value = Date.now()
@@ -115,6 +130,9 @@ export const useAuthStore = defineStore('auth', () => {
   function logout(): void {
     isAuthenticated.value = false
     authTimestamp.value = null
+    isSeniorMode.value = false
+    document.documentElement.classList.remove('senior-mode')
+    localStorage.removeItem('seniorMode')
     clearAuthState()
   }
 
@@ -124,6 +142,13 @@ export const useAuthStore = defineStore('auth', () => {
     if (state && state.isAuthenticated) {
       isAuthenticated.value = true
       authTimestamp.value = state.authTimestamp
+
+      // 恢復年長者模式
+      const seniorModeState = localStorage.getItem('seniorMode')
+      if (seniorModeState === 'true') {
+        isSeniorMode.value = true
+        document.documentElement.classList.add('senior-mode')
+      }
     }
   }
 
@@ -134,6 +159,7 @@ export const useAuthStore = defineStore('auth', () => {
     passwordList,
     loading,
     error,
+    isSeniorMode,
     // Getters
     isLoginValid,
     validPasswords,
