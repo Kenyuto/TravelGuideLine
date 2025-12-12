@@ -5,7 +5,9 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/TravelGuideLine/',
+  // 使用 './' 確保在 GitHub Pages 和本地預覽都能正常工作
+  // Hash 模式下，所有資源都相對於 index.html
+  base: './',
   plugins: [
     vue(),
     VitePWA({

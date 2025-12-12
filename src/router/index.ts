@@ -46,9 +46,11 @@ const routes: RouteRecordRaw[] = [
 
 /**
  * Router 實例
+ * Note: 使用 Hash 模式時，base 參數應該為空字串或 '/'
+ * 因為 Vite 的 base config 已經處理了靜態資源路徑
  */
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory('/'),
   routes,
   scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) {
