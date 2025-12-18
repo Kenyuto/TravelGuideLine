@@ -50,6 +50,7 @@
 - [X] T009 在 src/types/auth.ts 中建立 TypeScript 型別（AuthConfig、AuthItem）
 - [X] T010 [P] 在 src/types/itinerary.ts 中建立 TypeScript 型別（ItineraryDay、ItineraryItem）
 - [X] T011 [P] 在 src/types/travelInfo.ts 中建立 TypeScript 型別（TravelInfo、InfoItem）
+- [X] T011-SL [P] 在 src/types/shopping.ts 中建立 TypeScript 型別（ShoppingItem、ShoppingList、計算函數）
 - [X] T012 [P] 在 src/types/common.ts 中建立 TypeScript 型別（4 個錯誤型別：GoogleSheetError、InvalidPasswordError、PasswordExpiredError、ParsingError）
 - [X] T013 在 src/utils/googleSheetParser.ts 中實作 googleSheetParser 工具函數（3 個函數：parseGoogleSheetCSV、getGoogleSheetCSVUrl、fetchGoogleSheetCSV，使用 PapaParse 5.x）
 - [X] T014 [P] 在 src/utils/dateHelper.ts 中實作 dateHelper 工具函數（4 個函數：formatDate、parseDate、daysBetween、getToday）
@@ -126,6 +127,33 @@
 
 ---
 
+## Phase 4.5: 使用者故事 4 — 行程卡片購買清單（優先座：P2）🛒 協作購物
+
+**目標**：在行程卡片中提供購買清單功能，支援新增、編輯、刪除、完成狀態切換、統計顯示
+
+**獨立測試**： 
+- 開啟行程卡片 → 查看購買清單區塊 → 新增項目「伴手禮」→ 顯示於清單
+- 已新增項目 → 點擊切換完成狀態 → 視覺標記（打勾 + 綠色背景）
+- 多個項目 → 顯示總金額與已完成數量
+- 下次載入 → 購買清單狀態保留（LocalStorage）
+
+### 使用者故事 4 實作
+
+- [X] T036-SL1 [P] [US4-Shopping] 在 src/stores/shopping.ts 中建立 ShoppingStore（state: shoppingLists Map, getters: getShoppingList/getAllShoppingLists, actions: loadFromStorage/saveToStorage/addItem/updateItem/toggleItemComplete/deleteItem/clearList）
+- [X] T036-SL2 [P] [US4-Shopping] 在 src/components/shopping/ShoppingList.vue 中建立 ShoppingList 元件（props: itineraryItemId/currentUser, 功能：新增項目表單、項目列表、完成切換、刪除、顯示統計、過濾已完成）
+- [X] T036-SL3 [US4-Shopping] 在 src/components/itinerary/ItineraryItemCard.vue 中整合 ShoppingList 元件（於卡片下方顯示購買清單，傳遞 itineraryItemId 與 currentUser props）
+- [X] T036-SL4 [US4-Shopping] 在 src/App.vue 中初始化 ShoppingStore（onMounted 時呼叫 loadFromStorage）
+
+### 使用者故事 4 測試
+
+- [ ] T036-SL5 [P] [US4-Shopping] 在 tests/unit/stores/shopping.spec.ts 中為 ShoppingStore 撰寫單元測試（測試 addItem, updateItem, toggleItemComplete, deleteItem, getShoppingList, 計算統計）
+- [ ] T036-SL6 [P] [US4-Shopping] 在 tests/unit/components/ShoppingList.spec.ts 中為 ShoppingList 撰寫元件測試（測試 props 渲染、新增項目 emit、切換完成、刪除確認、過濾切換）
+- [ ] T036-SL7 [US4-Shopping] 在 tests/integration/shopping-flow.spec.ts 中為購買清單流程撰寫整合測試（測試新增項目 → 切換完成 → 顯示統計 → 刪除項目 → 檢查 LocalStorage → 重新載入 → 還原狀態）
+
+**檢查點**：使用者故事 4（購買清單）完成 - 購買清單功能正常、統計顯示正確、LocalStorage 持久化運作
+
+---
+
 ## Phase 5: 使用者故事 2 — 搜尋／過濾行程（優先座：P2）
 
 **目標**：關鍵字搜尋帶 300ms debounce、分類過濾器（景點/餐廳/交通/住宿）、保留日期導航
@@ -153,7 +181,7 @@
 
 ---
 
-## Phase 6: 使用者故事 4 — 檢視旅遊資訊（優先座：P2）
+## Phase 6: 使用者故事 5 — 檢視旅遊資訊（優先座：P2）
 
 **目標**：在獨立標籤頁中顯示旅遊資訊（打包清單、注意事項、緊急聯絡、預算）、分類過濾器、打包狀態持續性
 
@@ -162,24 +190,24 @@
 - 多個分類 → 選擇「攜帶物品」→ 僅顯示打包項目
 - 打包清單項目勾選 → 視覺標記（勾選圖示 + 刪除線）+ 狀態持續化至 LocalStorage
 
-### 使用者故事 4 實作
+### 使用者故事 5 實作 (原 US4 - 旅遊資訊)
 
-- [X] T050 [P] [US4] 在 src/stores/travelInfo.ts 中建立 TravelInfoStore（5 個 state: items/selectedCategory/packedItems/loading/error，5 個 getters: categories/filteredItems/itemsByCategory/packingList/packingProgress，5 個 actions: loadTravelInfo/filterByCategory/togglePacked/clearPackingState/restorePackingState）
-- [X] T051 [P] [US4] 在 src/views/TravelInfoView.vue 中建立 TravelInfoView 頁面（頁面版配包含分類過濾器、資訊卡片列表、打包進度條）
-- [X] T052 [P] [US4] 在 src/components/travelInfo/TravelInfoCard.vue 中建立 TravelInfoCard 元件（props: item/showPackingCheckbox，emits: toggle-packed，顯示分類特定欄位）
-- [X] T053 [US4] 在 src/router/index.ts 中新增「旅遊資訊」路由（path: /travel-info，component: TravelInfoView）
-- [X] T054 [US4] 在 App.vue 或主版面配置中新增標籤導航（2 個標籤：行程/旅遊資訊，高亮顯示活躍標籤）
-- [X] T055 [US4] 在 TravelInfoView 中實作分類過濾器（按鈕：攜帶物品/注意事項/緊急聯絡/預算/其他，呼叫 filterByCategory）
-- [X] T056 [US4] 在 TravelInfoCard 中新增打包勾選框（僅分類為「打包清單」時顯示，切換視覺狀態 + 呼叫 togglePacked）
-- [X] T057 [US4] 在 TravelInfoStore 初始化時還原打包狀態（從 LocalStorage 呼叫 restorePackingState）
+- [X] T050 [P] [US5] 在 src/stores/travelInfo.ts 中建立 TravelInfoStore（5 個 state: items/selectedCategory/packedItems/loading/error，5 個 getters: categories/filteredItems/itemsByCategory/packingList/packingProgress，5 個 actions: loadTravelInfo/filterByCategory/togglePacked/clearPackingState/restorePackingState）
+- [X] T051 [P] [US5] 在 src/views/TravelInfoView.vue 中建立 TravelInfoView 頁面（頁面版配包含分類過濾器、資訊卡片列表、打包進度條）
+- [X] T052 [P] [US5] 在 src/components/travelInfo/TravelInfoCard.vue 中建立 TravelInfoCard 元件（props: item/showPackingCheckbox，emits: toggle-packed，顯示分類特定欄位）
+- [X] T053 [US5] 在 src/router/index.ts 中新增「旅遊資訊」路由（path: /travel-info，component: TravelInfoView）
+- [X] T054 [US5] 在 App.vue 或主版面配置中新增標籤導航（2 個標籤：行程/旅遊資訊，高亮顯示活躍標籤）
+- [X] T055 [US5] 在 TravelInfoView 中實作分類過濾器（按鈕：攜帶物品/注意事項/緊急聯絡/預算/其他，呼叫 filterByCategory）
+- [X] T056 [US5] 在 TravelInfoCard 中新增打包勾選框（僅分類為「打包清單」時顯示，切換視覺狀態 + 呼叫 togglePacked）
+- [X] T057 [US5] 在 TravelInfoStore 初始化時還原打包狀態（從 LocalStorage 呼叫 restorePackingState）
 
-### 使用者故事 4 測試
+### 使用者故事 5 測試
 
-- [ ] T058 [P] [US4] 在 tests/unit/stores/travelInfo.spec.ts 中為 TravelInfoStore 撰寫單元測試（測試 loadTravelInfo、filterByCategory、togglePacked、packingProgress、itemsByCategory）
-- [ ] T059 [P] [US4] 在 tests/unit/components/TravelInfoCard.spec.ts 中為 TravelInfoCard 撰寫元件測試（測試 props 渲染、emit toggle-packed、打包勾選框條件顯示）
-- [ ] T060 [US4] 在 tests/integration/travel-info-flow.spec.ts 中為旅遊資訊流程撰寫整合測試（測試載入 Google Sheet → 顯示分類 → 依分類過濾 → 切換打包 → 檢查 LocalStorage）
+- [ ] T058 [P] [US5] 在 tests/unit/stores/travelInfo.spec.ts 中為 TravelInfoStore 撰寫單元測試（測試 loadTravelInfo、filterByCategory、togglePacked、packingProgress、itemsByCategory）
+- [ ] T059 [P] [US5] 在 tests/unit/components/TravelInfoCard.spec.ts 中為 TravelInfoCard 撰寫元件測試（測試 props 渲染、emit toggle-packed、打包勾選框條件顯示）
+- [ ] T060 [US5] 在 tests/integration/travel-info-flow.spec.ts 中為旅遊資訊流程撰寫整合測試（測試載入 Google Sheet → 顯示分類 → 依分類過濾 → 切換打包 → 檢查 LocalStorage）
 
-**檢查點**：使用者故事 4 完成 - 旅遊資訊檢視功能正常、分類過濾器運作、打包狀態持續性
+**檢查點**：使用者故事 5 完成 - 旅遊資訊檢視功能正常、分類過濾器運作、打包狀態持續性
 
 ---
 

@@ -31,7 +31,7 @@
 
 **Storage**: 
 - 無後端資料庫；資料來源為公開 Google Sheet（多工作表：登入設定、行程、旅遊資訊）
-- 本地儲存：LocalStorage（登入狀態、完成狀態 `isCompleted`、物品清單勾選 `isPacked`、快取版本號）
+- 本地儲存：LocalStorage（登入狀態、完成狀態 `isCompleted`、物品清單勾選 `isPacked`、購買清單 `shoppingLists`、快取版本號）
 - PWA Cache Storage（CSS/JS/字型資源 + 首屏 JSON）
 
 **Testing**: NEEDS CLARIFICATION（Vitest / Jest / Playwright for E2E）  
@@ -165,6 +165,7 @@ TravelGuideLine/
 │   ├── components/                # 可重用元件
 │   │   ├── auth/                  # 登入相關元件（LoginForm, PasswordItem）
 │   │   ├── itinerary/             # 行程相關元件（DayCard, ItemCard, SearchBar）
+│   │   ├── shopping/              # 購買清單元件（ShoppingList）
 │   │   ├── travelInfo/            # 旅遊資訊元件（InfoCard, CategoryFilter）
 │   │   └── common/                # 共用元件（Loading, ErrorMessage, PWAPrompt）
 │   ├── views/                     # 頁面元件
@@ -174,6 +175,7 @@ TravelGuideLine/
 │   ├── stores/                    # Pinia 狀態管理
 │   │   ├── auth.ts                # 登入驗證狀態（AuthStore）
 │   │   ├── itinerary.ts           # 行程資料狀態（ItineraryStore）
+│   │   ├── shopping.ts            # 購買清單狀態（ShoppingStore）
 │   │   ├── travelInfo.ts          # 旅遊資訊狀態（TravelInfoStore）
 │   │   └── ui.ts                  # UI 狀態（UIStore：loading, error, offline）
 │   ├── utils/                     # 工具函數
@@ -185,6 +187,7 @@ TravelGuideLine/
 │   ├── types/                     # TypeScript 型別定義
 │   │   ├── auth.ts                # AuthConfig, AuthItem
 │   │   ├── itinerary.ts           # ItineraryDay, ItineraryItem
+│   │   ├── shopping.ts            # ShoppingItem, ShoppingList
 │   │   ├── travelInfo.ts          # TravelInfo, InfoItem
 │   │   └── common.ts              # 共用型別（ErrorState, LoadingState）
 │   ├── router/                    # Vue Router 設定

@@ -111,9 +111,11 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useShoppingStore } from '@/stores/shopping'
 
 const route = useRoute()
 const authStore = useAuthStore()
+const shoppingStore = useShoppingStore()
 
 // 全域狀態（Phase 8 將移至 UIStore）
 const loading = ref(false)
@@ -170,6 +172,9 @@ onMounted(() => {
   // 全域錯誤處理
   window.addEventListener('error', handleError)
   window.addEventListener('unhandledrejection', handleUnhandledRejection)
+
+  // 載入購買清單資料
+  shoppingStore.loadFromStorage()
 })
 
 onUnmounted(() => {
