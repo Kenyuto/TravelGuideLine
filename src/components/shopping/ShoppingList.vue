@@ -185,7 +185,7 @@ const showCompleted = ref(true)
 
 // 計算屬性
 const shoppingList = computed<ShoppingList>(() => {
-  return shoppingStore.getShoppingList.value(props.itineraryItemId)
+  return shoppingStore.getShoppingList(props.itineraryItemId)
 })
 
 const displayedItems = computed(() => {

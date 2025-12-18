@@ -136,10 +136,7 @@
 
         <!-- Shopping List Integration -->
         <div class="mt-4 border-t border-gray-200 pt-4">
-          <ShoppingList
-            :itineraryItemId="item.id"
-            :currentUser="authStore.user?.email || 'anonymous'"
-          />
+          <ShoppingList :itineraryItemId="item.id" :currentUser="'user'" />
         </div>
       </div>
       <div class="ml-4 flex flex-col gap-2">
@@ -175,9 +172,6 @@ import { computed } from 'vue'
 import { generateDeepLink } from '@/utils/deepLinkHelper'
 import type { ItineraryItem } from '@/types/itinerary'
 import ShoppingList from '@/components/shopping/ShoppingList.vue'
-import { useAuthStore } from '@/stores/auth'
-
-const authStore = useAuthStore()
 
 interface Props {
   item: ItineraryItem
