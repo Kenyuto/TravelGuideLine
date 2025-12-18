@@ -14,34 +14,34 @@ export interface ShoppingItem {
   itineraryItemId: string
 
   /** 項目名稱（必填） */
-  name: string
+  itemName: string
 
   /** 完成狀態（已勾選／未勾選） */
   isCompleted: boolean
 
   /** 備註（選填） */
-  note?: string
+  notes?: string
 
   /** 數量（選填） */
   quantity?: number
 
+  /** 單位（選填） */
+  unit?: string
+
   /** 預估金額（選填） */
-  estimatedAmount?: number
+  estimatedCost?: number
 
-  /** 幣別（選填，預設 TWD） */
-  currency?: string
+  /** 創建使用者（必填） */
+  createdBy: string
 
-  /** 創建使用者（選填） */
-  createdBy?: string
-
-  /** 創建時間 */
-  createdAt: Date
+  /** 創建時間（ISO 8601） */
+  createdAt: string
 
   /** 最後更新使用者（選填） */
   lastUpdatedBy?: string
 
-  /** 最後更新時間 */
-  lastUpdatedAt: Date
+  /** 最後更新時間（ISO 8601，選填） */
+  lastUpdatedAt?: string
 }
 
 /**

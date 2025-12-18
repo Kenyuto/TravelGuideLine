@@ -23,15 +23,18 @@
 
 **Language/Version**: JavaScript ES2022+ / TypeScript 5.x（待研究確認是否採用 TypeScript）  
 **Primary Dependencies**: 
-- 前端框架 NEEDS CLARIFICATION（Vue 3 / React 18 / Vanilla JS）
-- 建構工具 NEEDS CLARIFICATION（Vite / Webpack / Parcel）
-- Google Sheet 解析 NEEDS CLARIFICATION（PapaParse for CSV / native fetch for JSON）
-- PWA NEEDS CLARIFICATION（Workbox / 手動 Service Worker）
-- 路由 NEEDS CLARIFICATION（Vue Router / React Router / 原生 History API）
+- 前端框架：Vue 3.4+ (Composition API)
+- 建構工具：Vite 5.x
+- 狀態管理：Pinia 2.x
+- Google Sheet 解析：PapaParse 5.x（CSV 讀取）
+- Google Apps Script Web App：購買清單寫入端點（RESTful API）
+- PWA：Workbox (vite-plugin-pwa)
+- 路由：Vue Router 4.x (Hash mode)
 
 **Storage**: 
-- 無後端資料庫；資料來源為公開 Google Sheet（多工作表：登入設定、行程、旅遊資訊）
-- 本地儲存：LocalStorage（登入狀態、完成狀態 `isCompleted`、物品清單勾選 `isPacked`、購買清單 `shoppingLists`、快取版本號）
+- 無後端資料庫；資料來源為公開 Google Sheet（多工作表：登入設定、行程、旅遊資訊、購買清單）
+- Google Apps Script Web App：作為購買清單的 RESTful 寫入端點（CREATE/UPDATE/DELETE 操作）
+- 本地儲存：LocalStorage（登入狀態、完成狀態 `isCompleted`、物品清單勾選 `isPacked`、購買清單離線佇列、快取版本號）
 - PWA Cache Storage（CSS/JS/字型資源 + 首屏 JSON）
 
 **Testing**: NEEDS CLARIFICATION（Vitest / Jest / Playwright for E2E）  
@@ -179,7 +182,9 @@ TravelGuideLine/
 │   │   ├── travelInfo.ts          # 旅遊資訊狀態（TravelInfoStore）
 │   │   └── ui.ts                  # UI 狀態（UIStore：loading, error, offline）
 │   ├── utils/                     # 工具函數
-│   │   ├── googleSheetParser.ts   # Google Sheet CSV 解析
+│   │   ├── googleSheetParser.ts   # Google Sheet CSV 解析（含購買清單）
+│   │   ├── googleSheetWriter.ts   # Google Apps Script Web App 寫入（購買清單）
+│   │   ├── syncQueue.ts           # 離線同步佇列管理
 │   │   ├── dateHelper.ts          # 日期處理
 │   │   ├── searchHelper.ts        # 搜尋邏輯
 │   │   ├── authHelper.ts          # LocalStorage 驗證狀態管理

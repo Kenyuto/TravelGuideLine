@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import type { AuthConfig, AuthItem } from '@/types/auth'
 import type { ItineraryItem } from '@/types/itinerary'
 import type { InfoItem } from '@/types/travelInfo'
+import type { ShoppingItem } from '@/types/shopping'
 import { GoogleSheetError, ParsingError } from '@/types/common'
 import { computeIsValid } from '@/types/auth'
 import { computeIsToday, computeTagList } from '@/types/itinerary'
@@ -68,8 +69,8 @@ export async function fetchGoogleSheetCSV(sheetId: string, gid: number): Promise
  */
 export function parseGoogleSheetCSV(
   csvData: string,
-  type: 'itinerary' | 'travelInfo' | 'authConfig'
-): ItineraryItem[] | InfoItem[] | AuthConfig {
+  type: 'itinerary' | 'travelInfo' | 'authConfig' | 'shoppingList'
+): ItineraryItem[] | InfoItem[] | AuthConfig | ShoppingItem[] {
   const parseResult = Papa.parse<Record<string, string>>(csvData, {
     header: true,
     skipEmptyLines: true,
@@ -95,6 +96,8 @@ export function parseGoogleSheetCSV(
         return parseTravelInfoCSV(rows)
       case 'authConfig':
         return parseAuthConfigCSV(rows)
+      case 'shoppingList':
+        return parseShoppingListCSV(rows)
       default:
         throw new ParsingError(`不支援的資料類型：${type}`)
     }
@@ -262,4 +265,50 @@ function parseAuthConfigCSV(rows: Record<string, string>[]): AuthConfig {
     lastUpdated: new Date(),
     version: '1.0.0',
   }
+}
+
+/**
+ * 解析購買清單 CSV
+ * @param rows - CSV 列資料
+ * @returns ShoppingItem 陣列
+ */
+function parseShoppingListCSV(rows: Record<string, string>[]): ShoppingItem[] {
+  const items: ShoppingItem[] = []
+
+  rows.forEach((row, index) => {
+    const id = row['id']?.trim()
+    const itineraryItemId = row['itineraryItemId']?.trim()
+    const itemName = row['itemName']?.trim()
+
+    if (!id || !itineraryItemId || !itemName) {
+      console.warn(`第 ${index + 2} 列：缺少必填欄位（id/itineraryItemId/itemName），跳過`)
+      return
+    }
+
+    const isCompletedValue = row['isCompleted']?.trim().toLowerCase()
+    const isCompleted =
+      isCompletedValue === 'true' ||
+      isCompletedValue === '1' ||
+      isCompletedValue === 'yes' ||
+      isCompletedValue === '是'
+
+    const item: ShoppingItem = {
+      id,
+      itineraryItemId,
+      itemName,
+      quantity: row['quantity'] ? parseInt(row['quantity']) : undefined,
+      unit: row['unit']?.trim() || undefined,
+      estimatedCost: row['estimatedCost'] ? parseFloat(row['estimatedCost']) : undefined,
+      notes: row['notes']?.trim() || undefined,
+      isCompleted,
+      createdBy: row['createdBy']?.trim() || 'user',
+      createdAt: row['createdAt']?.trim() || new Date().toISOString(),
+      lastUpdatedBy: row['lastUpdatedBy']?.trim() || undefined,
+      lastUpdatedAt: row['lastUpdatedAt']?.trim() || undefined,
+    }
+
+    items.push(item)
+  })
+
+  return items
 }

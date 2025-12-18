@@ -1,5 +1,99 @@
 <template>
   <div class="shopping-list border-t pt-4 mt-4">
+    <!-- 同步狀態列 -->
+    <div
+      v-if="shoppingStore.isSyncing || shoppingStore.hasPendingSync || shoppingStore.error"
+      class="mb-3 rounded-lg p-3 text-sm"
+      :class="{
+        'bg-blue-50 text-blue-800': shoppingStore.isSyncing,
+        'bg-yellow-50 text-yellow-800': shoppingStore.hasPendingSync && !shoppingStore.isSyncing,
+        'bg-red-50 text-red-800': shoppingStore.error,
+      }"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <!-- 同步中圖示 -->
+          <svg
+            v-if="shoppingStore.isSyncing"
+            class="h-4 w-4 animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <!-- 警告圖示 -->
+          <svg
+            v-else-if="shoppingStore.hasPendingSync"
+            class="h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <!-- 錯誤圖示 -->
+          <svg
+            v-else-if="shoppingStore.error"
+            class="h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+
+          <!-- 狀態文字 -->
+          <span v-if="shoppingStore.isSyncing">同步中...</span>
+          <span v-else-if="shoppingStore.error">{{ shoppingStore.error }}</span>
+          <span v-else-if="shoppingStore.hasPendingSync">
+            有 {{ shoppingStore.syncQueueSize }} 項變更等待同步
+          </span>
+        </div>
+
+        <!-- 重試按鈕 -->
+        <button
+          v-if="shoppingStore.error || shoppingStore.hasPendingSync"
+          @click="handleRetrySync"
+          class="px-3 py-1 rounded bg-white border border-current hover:bg-opacity-50 transition-colors"
+        >
+          {{ shoppingStore.error ? '重試' : '立即同步' }}
+        </button>
+      </div>
+
+      <!-- 最後同步時間 -->
+      <div
+        v-if="shoppingStore.lastSyncTime && !shoppingStore.error"
+        class="mt-1 text-xs opacity-75"
+      >
+        最後同步：{{ formatSyncTime(shoppingStore.lastSyncTime) }}
+      </div>
+    </div>
+
     <div class="flex items-center justify-between mb-3">
       <h4 class="text-md font-semibold text-gray-900 flex items-center gap-2">
         🛒 購買清單
@@ -104,12 +198,14 @@
               item.isCompleted ? 'line-through text-gray-500' : 'text-gray-900',
             ]"
           >
-            {{ item.name }}
-            <span v-if="item.quantity" class="text-gray-600"> ×{{ item.quantity }}</span>
+            {{ item.itemName }}
+            <span v-if="item.quantity" class="text-gray-600">
+              ×{{ item.quantity }}{{ item.unit ? ' ' + item.unit : '' }}
+            </span>
           </div>
-          <div v-if="item.note" class="text-xs text-gray-600 mt-1">{{ item.note }}</div>
-          <div v-if="item.estimatedAmount" class="text-xs text-gray-600 mt-1">
-            {{ item.currency }} {{ item.estimatedAmount.toLocaleString() }}
+          <div v-if="item.notes" class="text-xs text-gray-600 mt-1">{{ item.notes }}</div>
+          <div v-if="item.estimatedCost" class="text-xs text-gray-600 mt-1">
+            TWD {{ item.estimatedCost.toLocaleString() }}
           </div>
           <div v-if="item.lastUpdatedBy || item.lastUpdatedAt" class="text-xs text-gray-500 mt-1">
             <span v-if="item.lastUpdatedBy">{{ item.lastUpdatedBy }}</span>
@@ -200,10 +296,9 @@ function handleAddItem() {
   if (!newItemName.value.trim()) return
 
   shoppingStore.addItem(props.itineraryItemId, newItemName.value, {
-    note: newItemNote.value || undefined,
+    notes: newItemNote.value || undefined,
     quantity: newItemQuantity.value,
-    estimatedAmount: newItemAmount.value,
-    currency: newItemCurrency.value,
+    estimatedCost: newItemAmount.value,
     createdBy: props.currentUser,
   })
 
@@ -230,7 +325,11 @@ function toggleShowCompleted() {
   showCompleted.value = !showCompleted.value
 }
 
-function formatTime(date: Date): string {
+function handleRetrySync() {
+  shoppingStore.syncOfflineChanges()
+}
+
+function formatTime(date: string): string {
   const now = new Date()
   const diff = now.getTime() - new Date(date).getTime()
   const minutes = Math.floor(diff / 60000)
@@ -241,5 +340,9 @@ function formatTime(date: Date): string {
   if (hours > 0) return `${hours}小時前`
   if (minutes > 0) return `${minutes}分鐘前`
   return '剛剛'
+}
+
+function formatSyncTime(date: Date): string {
+  return formatTime(date.toISOString())
 }
 </script>

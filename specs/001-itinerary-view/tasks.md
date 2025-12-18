@@ -154,6 +154,38 @@
 
 ---
 
+## Phase 4.6: 使用者故事 4 擴充 — Google Sheet 同步購買清單（優先座：P2）🔄 多人協作
+
+**目標**：將購買清單從 LocalStorage 遷移至 Google Sheet 儲存，支援多人即時協作、離線同步、跨裝置存取
+
+**獨立測試**：
+- 新增購買項目 → 寫入 Google Sheet「購買清單」工作表 → 其他使用者重新整理後看到新項目
+- 離線狀態下編輯 → 加入離線佇列 → 恢復網路後自動同步至 Google Sheet
+- 多人同時編輯同一項目 → Last Write Wins（最後寫入獲勝）策略生效
+- 同步狀態 UI → 顯示「同步中」、「同步成功」、「同步失敗」訊息
+
+### 使用者故事 4 擴充實作
+
+- [ ] T036-SL1-GS1 [P] [US4-GoogleSheet] 在 src/utils/googleSheetWriter.ts 中建立 googleSheetWriter 工具（4 個函數：createShoppingItem、updateShoppingItem、deleteShoppingItem、debouncedWrite，支援 500ms 防抖、錯誤處理、CORS）
+- [ ] T036-SL1-GS2 [P] [US4-GoogleSheet] 在 src/utils/googleSheetParser.ts 中新增 parseShoppingListCSV 函數（解析 Google Sheet「購買清單」工作表，12 欄位：id/itineraryItemId/itemName/quantity/unit/estimatedCost/notes/isCompleted/createdBy/createdAt/lastUpdatedBy/lastUpdatedAt）
+- [ ] T036-SL1-GS3 [US4-GoogleSheet] 在 src/utils/syncQueue.ts 中建立 syncQueue 工具（管理離線操作佇列，支援 FIFO 順序、自動重試、衝突解決 Last Write Wins）
+- [ ] T036-SL1-GS4 [US4-GoogleSheet] 更新 src/stores/shopping.ts 為 Google Sheet 整合（新增：webAppUrl state、isSyncing state、syncQueue state、loadFromGoogleSheet action、syncToGoogleSheet action、syncOfflineChanges action、handleNetworkReconnection action，保留 LocalStorage 作為離線快取）
+- [ ] T036-SL1-GS5 [US4-GoogleSheet] 更新 src/components/shopping/ShoppingList.vue 加入同步狀態 UI（顯示同步圖示、同步中轉圈、同步失敗錯誤訊息 + 重試按鈕、最後更新時間與更新者）
+- [ ] T036-SL1-GS6 [P] [US4-GoogleSheet] 在 src/App.vue 中加入網路重連處理（監聽 online 事件 → 呼叫 ShoppingStore.syncOfflineChanges）
+- [ ] T036-SL1-GS7 [P] [US4-GoogleSheet] 更新 .env.example 加入 VITE_GOOGLE_APPS_SCRIPT_WEB_APP_URL（範例值：https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec）
+- [ ] T036-SL1-GS8 [P] [US4-GoogleSheet] 在 docs/google-apps-script/ 中建立 ShoppingListAPI.gs 部署指南（部署步驟、權限設定、測試方法、錯誤排查）
+
+### 使用者故事 4 擴充測試
+
+- [ ] T036-SL1-GS9 [P] [US4-GoogleSheet] 在 tests/unit/utils/googleSheetWriter.spec.ts 中為 googleSheetWriter 撰寫單元測試（測試 createShoppingItem、updateShoppingItem、deleteShoppingItem、500ms 防抖、錯誤處理）
+- [ ] T036-SL1-GS10 [P] [US4-GoogleSheet] 在 tests/unit/utils/syncQueue.spec.ts 中為 syncQueue 撰寫單元測試（測試 FIFO 佇列、自動重試、Last Write Wins 衝突解決、持久化至 LocalStorage）
+- [ ] T036-SL1-GS11 [US4-GoogleSheet] 在 tests/integration/shopping-sync-flow.spec.ts 中為購買清單同步流程撰寫整合測試（測試新增項目 → 寫入 Google Sheet → 其他使用者讀取 → 離線編輯 → 恢復網路 → 自動同步 → 檢查 Google Sheet）
+- [ ] T036-SL1-GS12 [US4-GoogleSheet] 在 tests/e2e/shopping-collaboration.spec.ts 中為多人協作場景撰寫 E2E 測試（測試多瀏覽器同時編輯、Last Write Wins 策略、同步狀態 UI、離線同步恢復）
+
+**檢查點**：使用者故事 4 擴充完成 - Google Sheet 同步功能正常、多人協作運作、離線同步機制有效、同步狀態 UI 清晰
+
+---
+
 ## Phase 5: 使用者故事 2 — 搜尋／過濾行程（優先座：P2）
 
 **目標**：關鍵字搜尋帶 300ms debounce、分類過濾器（景點/餐廳/交通/住宿）、保留日期導航
@@ -469,11 +501,11 @@ Task T041: "在 tests/e2e/itinerary.spec.ts 中為行程場景撰寫 E2E 測試"
 - **Phase 7（US3 - 深連結）**：7 個任務
 - **Phase 8（整體優化）**：16 個任務
 
-**總計**：83 個任務
+**總計**：95 個任務（含 Phase 4.6 購買清單 Google Sheet 同步 12 個任務）
 
-**平行執行機會**：35+ 個任務標記 [P]（佔總數的 42%）
+**平行執行機會**：40+ 個任務標記 [P]（佔總數的 42%）
 
 **MVP 交付物**：31 個任務（Phase 1-4：專案設置 + 基礎架構 + 登入 + 行程檢視）
 
-**估計時間線**（單一開發者）：4-6 週  
-**Estimated Timeline** (2-3 developers, parallel execution): 3-4 weeks
+**估計時間線**（單一開發者）：5-7 週（含 Google Sheet 同步 10.5 小時）  
+**Estimated Timeline** (2-3 developers, parallel execution): 4-5 weeks

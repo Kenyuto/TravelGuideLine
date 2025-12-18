@@ -139,6 +139,8 @@ function clearError() {
  */
 function handleOnline() {
   isOffline.value = false
+  // 網路恢復時，同步購買清單離線變更
+  shoppingStore.handleNetworkReconnection()
 }
 
 function handleOffline() {
@@ -173,8 +175,8 @@ onMounted(() => {
   window.addEventListener('error', handleError)
   window.addEventListener('unhandledrejection', handleUnhandledRejection)
 
-  // 載入購買清單資料
-  shoppingStore.loadFromStorage()
+  // 載入購買清單資料（優先從 Google Sheet，失敗時回退至 LocalStorage）
+  shoppingStore.loadFromGoogleSheet()
 })
 
 onUnmounted(() => {
