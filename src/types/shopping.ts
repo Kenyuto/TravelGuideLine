@@ -67,7 +67,7 @@ export interface ShoppingList {
  * @returns 預估總金額
  */
 export function computeTotalEstimatedAmount(items: ShoppingItem[]): number {
-  return items.reduce((sum, item) => sum + (item.estimatedAmount || 0), 0)
+  return items.reduce((sum, item) => sum + (item.estimatedCost || 0), 0)
 }
 
 /**
